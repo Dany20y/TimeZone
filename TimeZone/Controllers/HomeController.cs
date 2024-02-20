@@ -25,5 +25,36 @@ namespace TimeZone.Controllers
         {
             return View();
         }
+
+        public ActionResult Blog()
+        {
+            return View();
+        }
+        public ActionResult BlogDetails()
+        {
+            return View();
+        }
+        public ActionResult Login()
+        {
+            return View();
+        }
+        public ActionResult Cart()
+        {
+            return View();
+        }
+
+        public ActionResult Confirmation()
+        {
+            return View();
+        }
+
+        public ActionResult ProductCheckout() 
+        { 
+            return View();
+        }
+        public ActionResult Contact()
+        {
+            return View();
+        }
     }
 }
