@@ -520,6 +520,10 @@
     <Content Include="Vendor\Doc\fonts\fontawesome-webfont.woff" />
     <Content Include="Vendor\Doc\fonts\FontAwesome.otf" />
     <Content Include="Vendor\Doc\img\Thumbs.db" />
+    <Content Include="Views\Shared\_Header.cshtml" />
+    <Content Include="Views\Shared\_Footer.cshtml" />
+    <Content Include="Views\Home\Shop.cshtml" />
+    <Content Include="Views\Home\About.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

@@ -13,5 +13,13 @@ namespace TimeZone.Controllers
         {
             return View();
         }
+        public ActionResult Shop()
+        {
+                return View();
+        }
+        public ActionResult About()
+        {
+            return View();
+        }
     }
 }
