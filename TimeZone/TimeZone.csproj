@@ -399,6 +399,7 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\userLogin.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -543,16 +544,11 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Models\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\BusinessLogic\TimeZone.BusinessLogic.csproj">
       <Project>{8afb404f-b434-4a7f-886a-c328efa3d3d9}</Project>
       <Name>TimeZone.BusinessLogic</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Domain\TimeZone.Domain.csproj">
-      <Project>{8db85e19-962d-4be1-8073-495f023235db}</Project>
-      <Name>TimeZone.Domain</Name>
     </ProjectReference>
   </ItemGroup>
   <PropertyGroup>

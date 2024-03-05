@@ -4,9 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Domain.Enums
+namespace TimeZone.Domain.Enums
 {
-    internal class LevelAcces
+    public enum LevelAcces
     {
+        Guest,
+        User,
+        Admin
     }
 }

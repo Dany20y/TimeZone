@@ -1,12 +1,15 @@
-﻿using System;
+﻿using TimeZone.Domain.Enums;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Domain.Entities.User.Global
+namespace TimeZone.Domain.Entities.User.Global
 {
-    internal class LevelStatus
+    public class LevelStatus
     {
+        public LevelAcces Level { get; set;}
+        public DateTime SessionTime { get; set;}
     }
 }
