@@ -9,8 +9,6 @@ using TimeZone.Domain.Entities.User.Global;
 using TimeZone.Domain.Entities.Product;
 using System.Net.Http.Headers;
 
-
-
 namespace TimeZone.BusinessLogic.Core
 {
     public class UserApi

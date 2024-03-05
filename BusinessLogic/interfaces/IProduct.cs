@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -9,6 +9,6 @@ namespace TimeZone.BusinessLogic.Interfaces
 {
     public interface IProduct
     {
-        ProductDetail GetDetailProduct(int id);
+        ProductDetail GetProductDetail (int id);
     }
 }

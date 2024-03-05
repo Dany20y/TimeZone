@@ -1,10 +1,13 @@
-﻿using BusinessLogic.Core;
-using BusinessLogic.Interfaces;
+﻿using TimeZone.BusinessLogic.Core;
+using TimeZone.BusinessLogic.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using TimeZone.Domain.Entities.User;
+using TimeZone.Domain.Entities.Res;
+using TimeZone.Domain.Entities.User.Global;
 
 namespace TimeZone.BusinessLogic
 {
@@ -18,5 +21,6 @@ namespace TimeZone.BusinessLogic
         {
             return CheckLevelLogic(key);
         }
+
     }
 }

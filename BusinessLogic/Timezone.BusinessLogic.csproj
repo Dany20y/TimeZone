@@ -42,6 +42,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BusssinesLogic.cs" />
+    <Compile Include="Interfaces\IProduct.cs" />
     <Compile Include="SessionBL.cs" />
     <Compile Include="Core\AdminApi.cs" />
     <Compile Include="Core\UserApi.cs" />
