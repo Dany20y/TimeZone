@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using TimeZone.Domain.Entities.User;
 using TimeZone.Domain.Entities.Res;
 using TimeZone.Domain.Entities.User.Global;
-using TimeZone.Domain.Entities.Porduct;
+using TimeZone.Domain.Entities.Product;
 using System.Net.Http.Headers;
 
 

@@ -4,10 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BusinessLogic.Interfaces
+namespace Domain.Entities.User.Global
 {
-    internal interface IProuct
+    internal class LevelStatus
     {
-
     }
 }

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace BusinessLogic.Interfaces
 {
-    internal interface ISession
+    public interface ISession
     {
         ActionStatus UserLogin(ULoginData data);
         LevelStatus UserLevel(string key);
