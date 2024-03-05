@@ -7,11 +7,11 @@
     @if (IsSectionDefined("Styles"))
     {@RenderSection("Styles", required: false)}
 
-    @*123*@
+@*123*@
 </head>
 <body>
     @Html.Partial("_Header")
-    @Html.Partial("_Hero")
+
     @RenderBody()
     @Html.Partial("_Footer")
     @Scripts.Render("~/bundles/vendor")

@@ -42,17 +42,14 @@ namespace TimeZone.Controllers
         {
             return View();
         }
-
         public ActionResult Confirmation()
         {
             return View();
         }
-
         public ActionResult ProductCheckout() 
         { 
             return View();
         }
-        
         public ActionResult Contact()
         {
             return View();

@@ -399,6 +399,7 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\TimeZone.Web.Models.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -532,6 +533,8 @@
     <Content Include="Views\Home\Confirmation.cshtml" />
     <Content Include="Views\Home\ProductCheckout.cshtml" />
     <Content Include="Views\Home\Contact.cshtml" />
+    <Content Include="Views\Shared\_Hero.cshtml" />
+    <Content Include="Views\Shared\NoHero.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -541,7 +544,16 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Models\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\BusinessLogic\Timezone.BusinessLogic.csproj">
+      <Project>{8afb404f-b434-4a7f-886a-c328efa3d3d9}</Project>
+      <Name>Timezone.BusinessLogic</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Domain\TimeZone.Domain.csproj">
+      <Project>{8db85e19-962d-4be1-8073-495f023235db}</Project>
+      <Name>TimeZone.Domain</Name>
+    </ProjectReference>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
