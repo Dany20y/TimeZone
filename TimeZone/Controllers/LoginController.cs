@@ -1,4 +1,4 @@
-﻿using BusinessLogic.Interfaces;
+﻿using TimeZone.BusinessLogic.Interfaces;
 using Microsoft.Ajax.Utilities;
 using System;
 using System.Collections.Generic;
@@ -8,6 +8,9 @@ using System.Security.Cryptography;
 using System.Web;
 using System.Web.Mvc;
 using TimeZone.BusinessLogic;
+using TimeZone.Models;
+using TimeZone.Domain.Entities.User;
+using TimeZone.Domain.Entities.User.Global;
 
 namespace TimeZone.Controllers
 {
@@ -28,7 +31,7 @@ namespace TimeZone.Controllers
             {
                 ULoginData data = new ULoginData
                 {
-                    CredentialCache = login.Credential,
+                    Credential = login.Credential,
                     Password = login.Password,
                     LoginIp = Request.UserHostAddress,
                     LoginDataTime = DateTime.Now
