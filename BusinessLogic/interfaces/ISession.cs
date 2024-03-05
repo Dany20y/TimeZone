@@ -8,5 +8,7 @@ namespace BusinessLogic.Interfaces
 {
     internal interface ISession
     {
+        ActionStatus UserLogin(ULoginData data);
+        LevelStatus UserLevel(string key);
     }
 }

@@ -8,5 +8,6 @@ namespace BusinessLogic.Interfaces
 {
     internal interface IProuct
     {
+
     }
 }
