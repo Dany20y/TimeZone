@@ -4,11 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace TimeZone.BusinessLogic.Interfaces
+namespace BusinessLogic.Interfaces
 {
-        public interface ISession
+    internal interface ISession
     {
         ActionStatus UserLogin(ULoginData data);
-        LevelStatus CheckLevel(string key);
+        LevelStatus UserLevel(string key);
     }
 }
