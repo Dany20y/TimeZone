@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BusinessLogic
+namespace BusinessLogic.Interfaces
 {
-    public class Class1
+    internal interface IProuct
     {
     }
 }
