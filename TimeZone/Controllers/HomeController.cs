@@ -15,7 +15,7 @@ namespace TimeZone.Controllers
         }
         public ActionResult Shop()
         {
-                return View(); sfdfsdf
+                return View(); 
         }
         public ActionResult About()
         {
