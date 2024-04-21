@@ -5,11 +5,11 @@ VisualStudioVersion = 17.9.34607.119
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TimeZone", "TimeZone\TimeZone.csproj", "{4A750764-C36F-4A71-998F-8E752B8286D2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TimeZone.BusinessLogic", "BusinessLogic\TimeZone.BusinessLogic.csproj", "{8AFB404F-B434-4A7F-886A-C328EFA3D3D9}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BusinessLogic", "BusinessLogic\BusinessLogic.csproj", "{8AFB404F-B434-4A7F-886A-C328EFA3D3D9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TimeZone.Domain", "Domain\TimeZone.Domain.csproj", "{8DB85E19-962D-4BE1-8073-495F023235DB}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Domain", "Domain\Domain.csproj", "{8DB85E19-962D-4BE1-8073-495F023235DB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TimeZone.Helpers", "Helpers\TimeZone.Helpers.csproj", "{0DAAE29D-90AD-4ECC-B9A6-5E9934519928}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Helpers", "Helpers\Helpers.csproj", "{0DAAE29D-90AD-4ECC-B9A6-5E9934519928}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -22,5 +22,15 @@ namespace TimeZone.BusinessLogic
             return CheckLevelLogic(key);
         }
 
+        public HttpCookie GenCookie(string loginCredential)
+        {
+            return Cookie(loginCredential);
+        }
+
+        public ActionStatus RegisterNewUserAction(URegisterData regData)
+        {
+            return RegisterUserAction(regData);
+        }
+
     }
 }

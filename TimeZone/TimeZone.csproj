@@ -550,13 +550,13 @@
     <Folder Include="Views\ProductDetailontriller\" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\BusinessLogic\TimeZone.BusinessLogic.csproj">
+    <ProjectReference Include="..\BusinessLogic\BusinessLogic.csproj">
       <Project>{8afb404f-b434-4a7f-886a-c328efa3d3d9}</Project>
-      <Name>TimeZone.BusinessLogic</Name>
+      <Name>BusinessLogic</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Domain\TimeZone.Domain.csproj">
+    <ProjectReference Include="..\Domain\Domain.csproj">
       <Project>{8db85e19-962d-4be1-8073-495f023235db}</Project>
-      <Name>TimeZone.Domain</Name>
+      <Name>Domain</Name>
     </ProjectReference>
   </ItemGroup>
   <PropertyGroup>
