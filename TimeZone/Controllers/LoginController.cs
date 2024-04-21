@@ -24,49 +24,13 @@ namespace Time_Zone.Controllers
             _session = bl.GetSessionBL();
         }
 
-        public ActionResult Login()
+        public ActionResult Index()
         {
             return View();
         }
-
-
-        // GET: Login
-        /*[HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Login(userLogin login)
-        {
-
-            if (ModelState.IsValid)
-            {
-                ULoginData data = new ULoginData
-                {
-                    Credential = login.Credential,
-                    Password = login.Password,
-                    LoginDataTime = DateTime.Now,
-                };
-
-                var userLogin = _session.UserLogin(data);
-
-                if (userLogin.Status)
-                {
-                    FormsAuthentication.SetAuthCookie(login.Credential, false);
-                    HttpCookie cookie = _session.GenCookie(login.Credential);
-                    ControllerContext.HttpContext.Response.Cookies.Add(cookie);
-                    Session["Credential"] = login.Credential;
-                    return RedirectToAction("Index", "Home");
-                }
-                else
-                {
-                    // Login failed, add error message to ModelState
-                    ViewBag.ErrorMessage = userLogin.StatusMessage;
-                    return RedirectToAction("Index", "Home");
-                }
-            }
-            return RedirectToAction("Index", "Home");
-        }*/
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Login(userLogin login)
+        public ActionResult Index(userLogin login)
         {
             if (ModelState.IsValid)
             {
@@ -86,12 +50,11 @@ namespace Time_Zone.Controllers
                 else
                 {
                     ModelState.AddModelError("", "Invalid username or password.");
-                    return RedirectToAction("Index", "Home");
+                    return RedirectToAction("About", "Home");
+
                 }
             }
-
             return RedirectToAction("Index", "Home");
         }
-
     }
 }
