@@ -11,6 +11,9 @@ using System.Net.Http.Headers;
 using Time_Zone.Domain.User;
 using BusinessLogic.DBModel.Seed;
 using Time_Zone.Domain.Enums;
+using Helpers;
+using System.ComponentModel.DataAnnotations;
+using System.Data.Entity;
 
 namespace Time_Zone.BusinessLogic.Core
 {
@@ -18,7 +21,68 @@ namespace Time_Zone.BusinessLogic.Core
     {
         internal ActionStatus UserLogData(ULoginData data)
         {
-            return new ActionStatus();
+            UDbTable result;
+            var pass = LoginHelper.HashGen(login.Password);
+            var validate = new EmailAddressAttribute();
+            var isValidEmail = validate.IsValid(login.Username);
+
+            using (var db = new UserContext())
+            {
+                result = isValidEmail
+                    ? db.Users.FirstOrDefault(u => u.Email == login.Username)
+                    : db.Users.FirstOrDefault(u => u.Credentials == login.Username && u.Password == pass);
+            }
+
+            if (result == null)
+            {
+                return new ActionStatus
+                {
+                    Status = false,
+                    StatusMessage = "The username or password is incorrect"
+                };
+            }
+
+            using (var db = new UserContext())
+            {
+                result.LastLogin = DateTime.Now;
+                db.Entry(result).State = EntityState.Modified;
+                db.SaveChanges();
+            }
+
+            return new ActionStatus {Status = true};
+        }
+
+        internal HttpCookie Cookie(string loginCredential)
+        {
+            var apiCookie = new HttpCookie("X-KEY")
+            {
+                Value = CookieGenerator.Create(loginCredential)
+            };
+
+            using (var db = new SessionContext())
+            {
+                var isValidEmail = new EmailAddressAttribute().IsValid(loginCredential);
+                var curent = db.Sessions.FirstOrDefault(e => e.Username == loginCredential);
+
+                if (curent != null)
+                {
+                    curent.CookieString = apiCookie.Value;
+                    curent.ExpireTime = DateTime.Now.AddMinutes(1);
+                }
+                else
+                {
+                    db.Sessions.Add(new Session
+                    {
+                        Username = loginCredential,
+                        CookieString = apiCookie.Value,
+                        ExpireTime = DateTime.Now.AddMinutes(1)
+                    });
+                }
+
+                db.SaveChanges();
+            }
+
+            return apiCookie;
         }
 
         public ActionStatus RegisterUserAction(URegisterData data)
@@ -36,7 +100,7 @@ namespace Time_Zone.BusinessLogic.Core
                     }
                 }
 
-                /*var hashedPassword = LoginHelper.HashGen(data.Password);*/
+                var hashedPassword = LoginHelper.HashGen(data.Password);
                 var newUser = new UDbTable
                 {
 
@@ -72,5 +136,10 @@ namespace Time_Zone.BusinessLogic.Core
         {
             return new ProductDetail();
         }
+        public bool UserSessionStatus()
+        {
+            return true;
+        }
+
     }
 }

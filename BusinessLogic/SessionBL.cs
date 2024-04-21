@@ -24,15 +24,20 @@ namespace Time_Zone.BusinessLogic
             return CheckLevelLogic(key);
         }
 
-/*        public HttpCookie GenCookie(string loginCredential)
+        public HttpCookie GenCookie(string loginCredential)
         {
             return Cookie(loginCredential);
         }
-*/
+
         public ActionStatus RegisterNewUserAction(URegisterData regData)
         {
             return RegisterUserAction(regData);
         }
+
+        /*        object ISession.ServiceToList()
+                {
+                    throw new System.NotImplementedException();
+                }*/
 
     }
 }

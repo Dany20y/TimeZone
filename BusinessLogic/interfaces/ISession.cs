@@ -17,7 +17,7 @@ namespace Time_Zone.BusinessLogic.Interfaces
     {
         ActionStatus UserLogin(ULoginData data);
         LevelStatus CheckLevel(string key);
-       /* HttpCookie GenCookie(string loginCredential);*/
+        HttpCookie GenCookie(string loginCredential);
         ActionStatus RegisterNewUserAction(URegisterData regData);
     }
 }
