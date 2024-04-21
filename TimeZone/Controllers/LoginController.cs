@@ -11,13 +11,14 @@ using Time_Zone.BusinessLogic;
 using Time_Zone.Models;
 using Time_Zone.Domain.Entities.User;
 using Time_Zone.Domain.Entities.User.Global;
+using System.Web.Security;
 
 namespace Time_Zone.Controllers
 {
     public class LoginController : Controller
     {
         private readonly ISession _session;
-        public LoginController() 
+        public LoginController()
         {
             var bl = new BussinesLogic();
             _session = bl.GetSessionBL();
@@ -30,34 +31,67 @@ namespace Time_Zone.Controllers
 
 
         // GET: Login
-        [HttpPost]
+        /*[HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Login(userLogin login)
-        {   
-            if(ModelState.IsValid)
+        {
+
+            if (ModelState.IsValid)
             {
                 ULoginData data = new ULoginData
                 {
-                    Credential = login.Username,
+                    Credential = login.Credential,
                     Password = login.Password,
-                    LoginIp = Request.UserHostAddress,
-                    LoginDataTime = DateTime.Now
+                    LoginDataTime = DateTime.Now,
                 };
 
-                var UserLogin = _session.UserLogin(data);
-                if (UserLogin.Status) 
+                var userLogin = _session.UserLogin(data);
+
+                if (userLogin.Status)
                 {
-                    LevelStatus status = _session.CheckLevel(UserLogin.SessionKey);
-                    
+                    FormsAuthentication.SetAuthCookie(login.Credential, false);
+                    HttpCookie cookie = _session.GenCookie(login.Credential);
+                    ControllerContext.HttpContext.Response.Cookies.Add(cookie);
+                    Session["Credential"] = login.Credential;
                     return RedirectToAction("Index", "Home");
                 }
                 else
                 {
-                    ModelState.AddModelError("Nume de utilizator sau parola incorecta. Va rugam sa incercati din nou!", UserLogin.StatusMessage);
-                    return View(login);
+                    // Login failed, add error message to ModelState
+                    ViewBag.ErrorMessage = userLogin.StatusMessage;
+                    return RedirectToAction("Index", "Home");
                 }
             }
-            return View(login);
+            return RedirectToAction("Index", "Home");
+        }*/
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Login(userLogin login)
+        {
+            if (ModelState.IsValid)
+            {
+                ULoginData data = new ULoginData
+                {
+                    Credential = login.Credential,
+                    Password = login.Password,
+                    LoginIp = Request.UserHostAddress,
+                    LoginDataTime = DateTime.Now,
+                };
+
+                var userLogin = _session.UserLogin(data);
+                if (userLogin.Status)
+                {
+                    return RedirectToAction("Index", "Home");
+                }
+                else
+                {
+                    ModelState.AddModelError("", "Invalid username or password.");
+                    return RedirectToAction("Index", "Home");
+                }
+            }
+
+            return RedirectToAction("Index", "Home");
         }
+
     }
 }

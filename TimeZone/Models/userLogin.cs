@@ -8,9 +8,10 @@ namespace Time_Zone.Models
 {
     public class userLogin
     {
-        public string Username { get; set; }
+        public string Credential { get; set; }decimal 
         public string Password { get; set; }
         public DateTime LoginDateTime { get; set; }
+        public string LoginIp { get; internal set; }
     }
 }
 

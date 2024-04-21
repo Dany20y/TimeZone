@@ -10,7 +10,7 @@ using System.Web.SessionState;
 
 namespace Time_Zone
 {
-    public class Global : System.Web.HttpApplication
+    public class Global : HttpApplication
     {
         void Application_Start(object sender, EventArgs e)
         {
