@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
-using TimeZone.Domain.Enums;
+using Time_Zone.Domain.Enums;
 
 namespace TimeZone.Models
 {
@@ -13,6 +13,6 @@ namespace TimeZone.Models
         public string Email { get; set; }
         public string Password { get; set; }
         public DateTime LastLogin { get; set; }
-        public LevelAcces level { get; set; }
+        public LevelAcces Level { get; set; }
     }
 }
