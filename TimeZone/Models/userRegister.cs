@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
-using TimeZone.Domain.Enums;
+using Time_Zone.Domain.Enums;
 
 namespace TimeZone.Models
 {
