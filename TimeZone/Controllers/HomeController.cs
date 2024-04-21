@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Web;
 using System.Web.Mvc;
 
-namespace TimeZone.Controllers
+namespace Time_Zone.Controllers
 {
     public class HomeController : Controller
     {

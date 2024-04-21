@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace TimeZone.Domain.Enums
+namespace Time_Zone.Domain.Enums
 {
     public enum LevelAcces
     {

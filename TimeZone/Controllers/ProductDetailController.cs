@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
-using TimeZone.BusinessLogic.Interfaces;
-using TimeZone.BusinessLogic;
-using TimeZone.Domain.Entities.Product;
+using Time_Zone.BusinessLogic.Interfaces;
+using Time_Zone.BusinessLogic;
+using Time_Zone.Domain.Entities.Product;
 
-namespace TimeZone.Controllers
+namespace Time_Zone.Controllers
 {
     public class ProductDetailController : Controller
     {

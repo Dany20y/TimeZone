@@ -1,15 +1,17 @@
-﻿using TimeZone.BusinessLogic.Core;
-using TimeZone.BusinessLogic.Interfaces;
+﻿using Time_Zone.BusinessLogic.Core;
+using Time_Zone.BusinessLogic.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using TimeZone.Domain.Entities.User;
-using TimeZone.Domain.Entities.Res;
-using TimeZone.Domain.Entities.User.Global;
+using Time_Zone.Domain.Entities.User;
+using Time_Zone.Domain.Entities.Res;
+using Time_Zone.Domain.Entities.User.Global;
+using System.Web;
+using Time_Zone.Domain.User;
 
-namespace TimeZone.BusinessLogic
+namespace Time_Zone.BusinessLogic
 {
     public class SessionBL : UserApi, ISession
     {
@@ -22,11 +24,11 @@ namespace TimeZone.BusinessLogic
             return CheckLevelLogic(key);
         }
 
-        public HttpCookie GenCookie(string loginCredential)
+/*        public HttpCookie GenCookie(string loginCredential)
         {
             return Cookie(loginCredential);
         }
-
+*/
         public ActionStatus RegisterNewUserAction(URegisterData regData)
         {
             return RegisterUserAction(regData);

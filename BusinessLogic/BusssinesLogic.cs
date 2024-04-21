@@ -1,11 +1,12 @@
-﻿using TimeZone.BusinessLogic.Interfaces;
+﻿using Time_Zone.BusinessLogic.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Time_Zone.BusinessLogic;
 
-namespace TimeZone.BusinessLogic
+namespace Time_Zone.BusinessLogic
 {
     public class BussinesLogic
     {

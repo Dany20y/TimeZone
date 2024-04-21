@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace TimeZone.Domain.Entities.Res
+namespace Time_Zone.Domain.Entities.Res
 {
     public class ActionStatus
     {

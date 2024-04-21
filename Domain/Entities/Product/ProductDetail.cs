@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace TimeZone.Domain.Entities.Product
+namespace Time_Zone.Domain.Entities.Product
 {
     public class ProductDetail
     {

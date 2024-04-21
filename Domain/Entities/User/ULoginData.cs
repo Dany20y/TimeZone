@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace TimeZone.Domain.Entities.User
+namespace Time_Zone.Domain.Entities.User
 {
     public class ULoginData
     {

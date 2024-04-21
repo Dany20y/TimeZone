@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using TimeZone.Domain.Enums;
+using Time_Zone.Domain.Enums;
 
-namespace Domain.Entities.User
+namespace Time_Zone.Domain.User
 {
     public class URegisterData
     {

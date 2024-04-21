@@ -1,4 +1,4 @@
-﻿using TimeZone.BusinessLogic.Interfaces;
+﻿using Time_Zone.BusinessLogic.Interfaces;
 using Microsoft.Ajax.Utilities;
 using System;
 using System.Collections.Generic;
@@ -7,12 +7,12 @@ using System.Net;
 using System.Security.Cryptography;
 using System.Web;
 using System.Web.Mvc;
-using TimeZone.BusinessLogic;
-using TimeZone.Models;
-using TimeZone.Domain.Entities.User;
-using TimeZone.Domain.Entities.User.Global;
+using Time_Zone.BusinessLogic;
+using Time_Zone.Models;
+using Time_Zone.Domain.Entities.User;
+using Time_Zone.Domain.Entities.User.Global;
 
-namespace TimeZone.Controllers
+namespace Time_Zone.Controllers
 {
     public class LoginController : Controller
     {
@@ -22,16 +22,18 @@ namespace TimeZone.Controllers
             var bl = new BussinesLogic();
             _session = bl.GetSessionBL();
         }
+
+
         // GET: Login
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Index(userLogin login)
+        public ActionResult Login(userLogin login)
         {   
             if(ModelState.IsValid)
             {
                 ULoginData data = new ULoginData
                 {
-                    Credential = login.Credential,
+                    Credential = login.Username,
                     Password = login.Password,
                     LoginIp = Request.UserHostAddress,
                     LoginDataTime = DateTime.Now
@@ -47,10 +49,10 @@ namespace TimeZone.Controllers
                 else
                 {
                     ModelState.AddModelError("Nume de utilizator sau parola incorecta. Va rugam sa incercati din nou!", UserLogin.StatusMessage);
-                    return View();
+                    return View(login);
                 }
             }
-            return View();
+            return View(login);
         }
     }
 }

@@ -1,14 +1,14 @@
-﻿using TimeZone.BusinessLogic.Core;
-using TimeZone.BusinessLogic.Interfaces;
+﻿using Time_Zone.BusinessLogic.Core;
+using Time_Zone.BusinessLogic.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using TimeZone.Domain.Entities.Product;
-using TimeZone.Domain;
+using Time_Zone.Domain.Entities.Product;
+using Time_Zone.Domain;
 
-namespace TimeZone.BusinessLogic
+namespace Time_Zone.BusinessLogic
 {
     class ProductBL : UserApi, IProduct
     {
