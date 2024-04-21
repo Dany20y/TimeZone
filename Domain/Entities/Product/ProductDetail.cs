@@ -12,7 +12,6 @@ namespace Time_Zone.Domain.Entities.Product
         public string Name { get; set; }
         public string Descript { get; set; } 
         public int Price { get; set; }
-        public string Duration { get; set; }
         public string Start { get; set; }
         public List<Outline> OutlineObj { get; set; }
     }

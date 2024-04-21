@@ -14,6 +14,6 @@ namespace Time_Zone.Domain.User
         public string Email { get; set; }
         public string Password { get; set; }
         public DateTime LastLogin { get; set; }
-        public LevelAcces level { get; set; }
+        public LevelAcces Level { get; set; }
     }
 }
