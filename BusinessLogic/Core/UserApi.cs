@@ -11,6 +11,7 @@ using Helpers;
 using System.ComponentModel.DataAnnotations;
 using System.Data.Entity;
 using System.Web;
+using Domain.Entities.User;
 
 namespace Time_Zone.BusinessLogic.Core
 {
