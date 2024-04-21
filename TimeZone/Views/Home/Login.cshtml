@@ -23,26 +23,26 @@
                         @Html.Raw(ViewBag.ErrorMessage)
                     </div>
                     }
-                    <form method="post" class="needs-validation" id="registrationForm" novalidate>
-                        @using (Html.BeginForm("Login", "Home", FormMethod.Post))
-                        {
+                <form method="post" class="needs-validation" id="registrationForm" novalidate>
+                    @using (Html.BeginForm("Login", "Home", FormMethod.Post))
+                    {
                         @Html.AntiForgeryToken()
 
- <!-- Email input -->
+                        <!-- Email input -->
                         <div class="form-outline mb-4">
                             @Html.TextBoxFor(m => m.Username, new { @class = "form-control", id = "email" })
                             @Html.LabelFor(m => m.Username, "Email", new { @class = "form-label" })
                             @Html.ValidationMessageFor(m => m.Username)
                         </div>
 
- <!-- Password input -->
+                        <!-- Password input -->
                         <div class="form-outline mb-4">
                             @Html.PasswordFor(m => m.Password, new { @class = "form-control", id = "password" })
                             @Html.LabelFor(m => m.Password, "Password", new { @class = "form-label" })
                             @Html.ValidationMessageFor(m => m.Password)
                         </div>
 
- <!-- Submit button -->
+                        <!-- Submit button -->
                         <button type="submit" class="btn btn-primary btn-block mb-4">
                             Sign in
                         </button>
