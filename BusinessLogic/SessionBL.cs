@@ -34,10 +34,10 @@ namespace Time_Zone.BusinessLogic
             return RegisterUserAction(regData);
         }
 
-        /*        object ISession.ServiceToList()
+    /*    object ISession.ServiceToList()
                 {
                     throw new System.NotImplementedException();
-                }*/
-
+                }
+*/
     }
 }

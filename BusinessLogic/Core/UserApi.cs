@@ -14,23 +14,24 @@ using Time_Zone.Domain.Enums;
 using Helpers;
 using System.ComponentModel.DataAnnotations;
 using System.Data.Entity;
+using System.Web;
 
 namespace Time_Zone.BusinessLogic.Core
 {
     public class UserApi
     {
-        internal ActionStatus UserLogData(ULoginData data)
+        internal ActionStatus UserLogData(ULoginData login)
         {
             UDbTable result;
             var pass = LoginHelper.HashGen(login.Password);
             var validate = new EmailAddressAttribute();
-            var isValidEmail = validate.IsValid(login.Username);
+            var isValidEmail = validate.IsValid(login.Credential);
 
             using (var db = new UserContext())
             {
                 result = isValidEmail
-                    ? db.Users.FirstOrDefault(u => u.Email == login.Username)
-                    : db.Users.FirstOrDefault(u => u.Credentials == login.Username && u.Password == pass);
+                    ? db.Users.FirstOrDefault(u => u.Email == login.Credential)
+                    : db.Users.FirstOrDefault(u => u.Credentials == login.Credential && u.Password == pass);
             }
 
             if (result == null)

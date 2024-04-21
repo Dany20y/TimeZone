@@ -23,6 +23,11 @@ namespace Time_Zone.Controllers
             _session = bl.GetSessionBL();
         }
 
+        public ActionResult Login()
+        {
+            return View();
+        }
+
 
         // GET: Login
         [HttpPost]
