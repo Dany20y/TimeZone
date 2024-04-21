@@ -8,7 +8,7 @@ using Time_Zone.Domain.Entities.User;
 using Time_Zone.Domain.User;
 
 
-namespace BusinessLogic.DBModel.Seed
+namespace Time_Zone.BusinessLogic.DBModel.Seed
 {
     public class UserContext : DbContext
     {

@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Time_Zone.Domain.User;
 
-namespace BusinessLogic.DBModel.Seed
+namespace Time_Zone.BusinessLogic.DBModel.Seed
 {
     public class SessionContext: DbContext
     {

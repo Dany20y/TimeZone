@@ -16,31 +16,6 @@
                         <p>There are advances being made in science and technology everyday, and a good example of this is the</p>
                         <a href="@Url.Action("Register", "Account")" class="btn_3">Create an Account</a> <!-- Dynamic URL generation for MVC actions -->
                     </div>
-                    }
-                <form method="post" class="needs-validation" id="registrationForm" novalidate>
-                    @using (Html.BeginForm("Login", "Home", FormMethod.Post))
-                    {
-                        @Html.AntiForgeryToken()
-
-                        <!-- Email input -->
-                        <div class="form-outline mb-4">
-                            @Html.TextBoxFor(m => m.Username, new { @class = "form-control", id = "email" })
-                            @Html.LabelFor(m => m.Username, "Email", new { @class = "form-label" })
-                            @Html.ValidationMessageFor(m => m.Username)
-                        </div>
-
-                        <!-- Password input -->
-                        <div class="form-outline mb-4">
-                            @Html.PasswordFor(m => m.Password, new { @class = "form-control", id = "password" })
-                            @Html.LabelFor(m => m.Password, "Password", new { @class = "form-label" })
-                            @Html.ValidationMessageFor(m => m.Password)
-                        </div>
-
-                        <!-- Submit button -->
-                        <button type="submit" class="btn btn-primary btn-block mb-4">
-                            Sign in
-                        </button>
-
                 </div>
             </div>
             <div class="col-lg-6 col-md-6">
@@ -81,7 +56,6 @@
                             <button type="submit" class="btn_3">log in</button>
                             <a class="lost_pass" href="#">forget password?</a>
                         </div>
->>>>>>> 7600afd34e4ddb84e43620e9d27ed775f185718d
                         }
                     </div>
                 </div>

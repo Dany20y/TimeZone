@@ -1,15 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Time_Zone.Domain.Entities.User;
 using Time_Zone.Domain.Entities.Res;
 using Time_Zone.Domain.Entities.User.Global;
 using Time_Zone.Domain.Entities.Product;
-using System.Net.Http.Headers;
 using Time_Zone.Domain.User;
-using BusinessLogic.DBModel.Seed;
+using Time_Zone.BusinessLogic.DBModel.Seed;
 using Time_Zone.Domain.Enums;
 using Helpers;
 using System.ComponentModel.DataAnnotations;
