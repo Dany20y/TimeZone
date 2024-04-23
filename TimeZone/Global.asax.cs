@@ -15,7 +15,7 @@ using Time_Zone.Domain.Entities.User;
 using TimeZone.Models;
 
 
-namespace App
+namespace Time_Zone
 {
     public class Global : HttpApplication
     {

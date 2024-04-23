@@ -11,19 +11,19 @@ using BusinessLogic;
 using BusinessLogic.Interfaces;
 using Domain.Entities.User;
 
-namespace App.Controllers
+namespace Time_Zone.Controllers
 {
-    public class LogInPageController : Controller
+    public class LoginPageController : Controller
     {
         private readonly ISession _session;
 
-        public LogInPageController()
+        public LoginPageController()
         {
             var bl = new BussinesLogic();
             _session = bl.GetSessionBL();
         }
 
-        public ActionResult LogIn()
+        public ActionResult Login()
         {
             return View();
         }
@@ -31,7 +31,7 @@ namespace App.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult LogIn(userLogin login)
+        public ActionResult Login(userLogin login)
         {
             HttpContext.Session["UserProfile"] = login;
 
