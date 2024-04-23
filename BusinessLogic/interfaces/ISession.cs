@@ -10,6 +10,7 @@ using Time_Zone.Domain.Entities.User.Global;
 using BusinessLogic.Core;
 using System.Web;
 using Time_Zone.Domain.User;
+using Domain.Entities.User;
 
 namespace Time_Zone.BusinessLogic.Interfaces
 {
@@ -19,5 +20,6 @@ namespace Time_Zone.BusinessLogic.Interfaces
         LevelStatus CheckLevel(string key);
         HttpCookie GenCookie(string loginCredential);
         ActionStatus RegisterNewUserAction(URegisterData regData);
+        UserMinimal GetUserByCookie(string value);
     }
 }

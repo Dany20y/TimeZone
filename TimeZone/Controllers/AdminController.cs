@@ -4,8 +4,6 @@ using System.IO.MemoryMappedFiles;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
-using Time_Zone.Controllers.Attributes;
-using AutoMapper;
 using Time_Zone.Models;
 
 namespace Time_Zone.Controllers
