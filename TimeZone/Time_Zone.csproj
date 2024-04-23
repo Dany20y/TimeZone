@@ -403,6 +403,8 @@
   <ItemGroup>
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\AdminController.cs" />
+    <Compile Include="Controllers\Atrributes\AdminModAttribute.cs" />
+    <Compile Include="Controllers\Atrributes\UserModAttributesController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\LoginController.cs" />
     <Compile Include="Controllers\ProductDetailController.cs" />
@@ -548,6 +550,7 @@
     <Content Include="Views\Home\Contact.cshtml" />
     <Content Include="Views\Shared\_Hero.cshtml" />
     <Content Include="Views\Shared\NoHero.cshtml" />
+    <Content Include="Views\Home\Admin.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
