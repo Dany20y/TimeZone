@@ -22,7 +22,6 @@ namespace Time_Zone.Controllers
             SessionStatus();
 
             if ((string)System.Web.HttpContext.Current.Session["LoginStatus"] == "login")
-            {
 
                 return RedirectToAction("", "Login");
             }
