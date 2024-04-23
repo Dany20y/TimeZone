@@ -50,7 +50,7 @@ namespace Time_Zone.Controllers
                 else
                 {
                     ModelState.AddModelError("", "Invalid username or password.");
-                    return RedirectToAction("About", "Home");
+                    return RedirectToAction("Login", "Home");
 
                 }
             }
