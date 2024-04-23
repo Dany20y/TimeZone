@@ -1,19 +1,15 @@
 ﻿using System;
 using System.Web.Mvc;
-using BusinessLogic;
 using Time_Zone.Models;
-using BusinessLogic.Interfaces;
-using Domain.Entities.User;
 using System.Web.Security;
 using System.Web;
-using Domain.Entities.Enums;
-using AutoMapper;
-using Domain.Entities.Res;
-using Time_Zone.BusinessLogic.Interfaces;
 using Time_Zone.BusinessLogic;
 using Time_Zone.Domain.Entities.Res;
 using Time_Zone.Domain.Entities.User;
-using Time_Zone.Models;
+using AutoMapper;
+using BusinessLogic;
+using BusinessLogic.Interfaces;
+using Domain.Entities.User;
 
 namespace App.Controllers
 {

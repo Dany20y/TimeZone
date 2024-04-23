@@ -4,7 +4,10 @@ using System.IO.MemoryMappedFiles;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using AutoMapper;
 using Time_Zone.Models;
+using TimeZone.Controllers.Atrributes;
+
 
 namespace Time_Zone.Controllers
 {
@@ -22,13 +25,10 @@ namespace Time_Zone.Controllers
             SessionStatus();
 
             if ((string)System.Web.HttpContext.Current.Session["LoginStatus"] == "login")
-
+            { 
                 return RedirectToAction("", "Login");
             }
             return View();
-
-
         }
-
-    }
+}
 }

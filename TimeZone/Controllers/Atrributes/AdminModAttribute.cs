@@ -1,10 +1,11 @@
-﻿using System;
+﻿using BusinessLogic.Interfaces;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Routing;
-using Time_Zone.BusinessLogic.Interfaces;
+using Time_Zone.BusinessLogic;
 using Time_Zone.Domain.Enums;
 using Time_Zone.Web.Extension;
 
@@ -53,7 +54,7 @@ namespace TimeZone.Controllers.Atrributes
         {
             filterContext.Result = new RedirectToRouteResult(
                 new RouteValueDictionary(
-                    new { controller = "LogInPage", action = "LogIn" }));
+                    new { controller = "Login", action = "Login" }));
         }
     }
 }

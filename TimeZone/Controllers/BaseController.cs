@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Linq;
 using System.Web.Mvc;
-using Time_Zone.BusinessLogic.Interfaces;
 using Time_Zone.BusinessLogic;
 using Time_Zone.Domain.Enums;
 using Time_Zone.Web.Extension;
+using BusinessLogic;
+using BusinessLogic.Interfaces;
 
 namespace Time_Zone.Controllers
 {

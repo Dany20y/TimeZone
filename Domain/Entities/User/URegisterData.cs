@@ -1,11 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Time_Zone.Domain.Enums;
 
-namespace Time_Zone.Domain.User
+namespace Domain.Entities.User
 {
     public class URegisterData
     {
@@ -14,6 +15,6 @@ namespace Time_Zone.Domain.User
         public string Email { get; set; }
         public string Password { get; set; }
         public DateTime LastLogin { get; set; }
-        public LevelAcces Level { get; set; }
+        public LevelAcces level { get; set; }
     }
 }

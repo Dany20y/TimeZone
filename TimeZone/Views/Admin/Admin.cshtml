@@ -1,6 +1,6 @@
 ﻿
 @{
-    Layout = "~/Views/Shared/AdminDashboard.cshtml";
+    Layout = "~/Views/Admin.cshtml";
     ViewBag.Title = "Admin";
 }
 
@@ -811,7 +811,7 @@
         });
     </script>
     <script>
-        var win = navigator.platform.indexOf('Win') > -1;
+        var win = navigator.indexOf('Win') > -1;
         if (win && document.querySelector('#sidenav-scrollbar')) {
             var options = {
                 damping: '0.5'
