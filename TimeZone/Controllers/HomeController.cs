@@ -6,11 +6,16 @@ using System.Web.Mvc;
 
 namespace Time_Zone.Controllers
 {
-    public class HomeController : Controller
+    public class HomeController : BaseController
     {
         // GET: Home
         public ActionResult Index()
         {
+            string role = SessionStatus();
+            if ((string)System.Web.HttpContext.Current.Session["LoginStatus"] != "login")
+            {
+                return View();
+            }
             return View();
         }
         public ActionResult Shop()

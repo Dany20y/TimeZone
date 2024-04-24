@@ -2,61 +2,44 @@
     Layout = "~/Views/Shared/NoHero.cshtml";
     ViewBag.Title = "Login";
 }
-
-@using System.Web.Optimization
 @model Time_Zone.Models.userLogin
 
 <section class="login_part section_padding">
     <div class="container">
         <div class="row align-items-center">
             <div class="col-lg-6 col-md-6">
-                <div class="login_part_text text-center">
-                    <div class="login_part_text_iner">
-                        <h2>New to our Shop?</h2>
-                        <p>There are advances being made in science and technology everyday, and a good example of this is the</p>
-                        <a href="@Url.Action("Register", "Account")" class="btn_3">Create an Account</a> <!-- Dynamic URL generation for MVC actions -->
+                <div class="login_part_form">
+                    <div class="login_part_form_iner">
+                        <h3>Welcome Back! <br>Please Sign in now</h3>
+                        @using (Html.BeginForm("Login", "", FormMethod.Post, new { @class = "row contact_form", @id = "loginForm", @novalidate = "novalidate" }))
+                        {
+                            @Html.AntiForgeryToken()
+                            <div class="col-md-12 form-group p_star">
+                                @Html.TextBoxFor(m => m.Email, new { @class = "form-control", @id = "email", @placeholder = "Email" })
+                                @Html.ValidationMessageFor(m => m.Email)
+                            </div>
+                            <div class="col-md-12 form-group p_star">
+                                @Html.PasswordFor(m => m.Password, new { @class = "form-control", @id = "password", @placeholder = "Password" })
+                                @Html.ValidationMessageFor(m => m.Password)
+                            </div>
+                            <div class="col-md-12 form-group">
+                                <div class="creat_account d-flex align-items-center">
+                                    <input type="checkbox" id="rememberMe" name="rememberMe">
+                                    <label for="rememberMe">Remember me</label>
+                                </div>
+                                <button type="submit" value="submit" class="btn_3">log in</button>
+                                <a class="lost_pass" href="#">forgot password?</a>
+                            </div>
+                        }
                     </div>
                 </div>
             </div>
             <div class="col-lg-6 col-md-6">
-                <div class="login_part_form">
-                    <div class="login_part_form_iner">
-                        <h3>Welcome Back! <br> Please Sign in now</h3>
-                        @using (Html.BeginForm("Index", "Login", FormMethod.Post, new { id = "LoginForm", @class = "row contact_form", novalidate = "novalidate" }))
-                        {
-                            @Html.AntiForgeryToken()
-                            @Html.ValidationSummary(true, "", new { @class = "text-danger" }) <!-- Validation summary to display all form errors -->
-                            <div class="col-md-12 form-group p_star">
-                                @Html.LabelFor(m => m.Credential, new { @class = "control-label" })
-                                @Html.TextBoxFor(m => m.Credential, new
-                                {
-                                    @class = "form-control",
-                                    placeholder = "example@gmail.com",
-                                    title = "Please enter your username"
-                                })
-                                <span class="help-block small">Your unique username to app</span>
-                                @Html.ValidationMessageFor(m => m.Credential, "", new { @class = "text-danger" }) <!-- Individual field validation message -->
-                            </div>
-                            <div class="col-md-12 form-group p_star">
-                                @Html.LabelFor(m => m.Password, new { @class = "control-label" })
-                                @Html.PasswordFor(m => m.Password, new
-                                {
-                                    @class = "form-control",
-                                    placeholder = "******",
-                                    title = "Please enter your password"
-                                })
-                                <span class="help-block small">Your strong password</span>
-                                @Html.ValidationMessageFor(m => m.Password, "", new { @class = "text-danger" }) <!-- Individual field validation message -->
-                            </div>
-                            <div class="col-md-12 form-group">
-                                <div class="creat_account d-flex align-items-center">
-                                    <input type="checkbox" id="f-option" name="selector">
-                                    <label for="f-option">Remember me</label>
-                                </div>
-                                <button type="submit" class="btn_3">log in</button>
-                                <a class="lost_pass" href="#">forget password?</a>
-                            </div>
-                        }
+                <div class="login_part_text text-center">
+                    <div class="login_part_text_iner">
+                        <h2>New to our Shop?</h2>
+                        <p>There are advances being made in science and technology every day, and a good example of this is the</p>
+                        <a href="#" class="btn_3">Create an Account</a>
                     </div>
                 </div>
             </div>
