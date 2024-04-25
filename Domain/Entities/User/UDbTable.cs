@@ -18,7 +18,7 @@ namespace Domain.Entities.User
 
     [Required]
     [Display(Name = "Username")]
-    [StringLength(30, MinimumLength = 5, ErrorMessage = "Username cannot be longer than 30 characters.")]
+    [StringLength(30, MinimumLength = 2, ErrorMessage = "Username cannot be longer than 30 characters.")]
     public string Credentials { get; set; }
 
     [Required]

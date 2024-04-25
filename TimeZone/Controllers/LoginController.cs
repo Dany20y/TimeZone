@@ -24,19 +24,20 @@ namespace Time_Zone.Controllers
             _session = bl.GetSessionBL();
         }
 
-        public ActionResult Index()
+        public ActionResult Login()
         {
             return View();
         }
+
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Index(userLogin login)
+        public ActionResult Login(userLogin login)
         {
             if (ModelState.IsValid)
             {
                 ULoginData data = new ULoginData
                 {
-                    Credential = login.Credential,
+                    Credential = login.Email,
                     Password = login.Password,
                     LoginIp = Request.UserHostAddress,
                     LoginDataTime = DateTime.Now,
@@ -54,7 +55,7 @@ namespace Time_Zone.Controllers
 
                 }
             }
-            return RedirectToAction("Index", "Home");
+            return View(login);
         }
     }
 }
