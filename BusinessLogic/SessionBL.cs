@@ -1,17 +1,13 @@
-﻿using Time_Zone.BusinessLogic.Core;
-using Time_Zone.BusinessLogic.Interfaces;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Time_Zone.Domain.Entities.User;
+﻿using Domain.Entities.User;
+using System.Web;
+using Time_Zone.BusinessLogic;
 using Time_Zone.Domain.Entities.Res;
 using Time_Zone.Domain.Entities.User.Global;
-using System.Web;
-using Time_Zone.Domain.User;
+using Time_Zone.Domain.Entities.User;
+using BusinessLogic.Interfaces;
+using BusinessLogic.Core;
 
-namespace Time_Zone.BusinessLogic
+namespace BusinessLogic
 {
     public class SessionBL : UserApi, ISession
     {
@@ -34,10 +30,15 @@ namespace Time_Zone.BusinessLogic
             return RegisterUserAction(regData);
         }
 
-    /*    object ISession.ServiceToList()
+        public UserMinimal GetUserByCookie(string apiCookieValue)
+        {
+            return UserCookie(apiCookieValue);
+        }
+
+        /*        object ISession.ServiceToList()
                 {
                     throw new System.NotImplementedException();
-                }
-*/
+                }*/
+
     }
 }

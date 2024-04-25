@@ -1,19 +1,25 @@
 ﻿using System;
 using System.Linq;
-using Time_Zone.Domain.Entities.User;
+using Domain.Entities;
+using System.ComponentModel;
+using System.Data.Entity;
+using Helpers;
+using System.Web;
+using AutoMapper;
+using Time_Zone.BusinessLogic.DBModel.Seed;
+using Time_Zone.Domain.Entities;
 using Time_Zone.Domain.Entities.Res;
 using Time_Zone.Domain.Entities.User.Global;
-using Time_Zone.Domain.Entities.Product;
-using Time_Zone.Domain.User;
-using Time_Zone.BusinessLogic.DBModel.Seed;
+using Time_Zone.Domain.Entities.User;
 using Time_Zone.Domain.Enums;
-using Helpers;
+using Time_Zone.Domain;
 using System.ComponentModel.DataAnnotations;
-using System.Data.Entity;
-using System.Web;
 using Domain.Entities.User;
+using Time_Zone.Domain.User;
+using Domain.Entities.Product;
 
-namespace Time_Zone.BusinessLogic.Core
+
+namespace BusinessLogic.Core
 {
     public class UserApi
     {
@@ -22,13 +28,13 @@ namespace Time_Zone.BusinessLogic.Core
             UDbTable result;
             var pass = LoginHelper.HashGen(login.Password);
             var validate = new EmailAddressAttribute();
-            var isValidEmail = validate.IsValid(login.Credential);
+            var isValidEmail = validate.IsValid(login.Username);
 
             using (var db = new UserContext())
             {
                 result = isValidEmail
-                    ? db.Users.FirstOrDefault(u => u.Email == login.Credential)
-                    : db.Users.FirstOrDefault(u => u.Credentials == login.Credential && u.Password == pass);
+                    ? db.Users.FirstOrDefault(u => u.Email == login.Email)
+                    : db.Users.FirstOrDefault(u => u.Credentials == login.Username && u.Password == pass);
             }
 
             if (result == null)
@@ -40,14 +46,23 @@ namespace Time_Zone.BusinessLogic.Core
                 };
             }
 
-            using (var db = new UserContext())
+            if (result != null && result.Password == pass)
             {
-                result.LastLogin = DateTime.Now;
-                db.Entry(result).State = EntityState.Modified;
-                db.SaveChanges();
+                using (var todo = new UserContext())
+                {
+
+                    /*  result. = login.LoginIp;*/
+                    result.LastLogin = login.LoginDateTime;
+                    todo.Entry(result).State = EntityState.Modified;
+                    todo.SaveChanges();
+                }
+                if (result.level == LevelAcces.Admin)
+                    return new ActionStatus { Status = true, StatusMessage = "Admin" };
+                else
+                    return new ActionStatus { Status = true, StatusMessage = "User" };
             }
 
-            return new ActionStatus {Status = true};
+            return new ActionStatus { Status = true };
         }
 
         internal HttpCookie Cookie(string loginCredential)
@@ -101,9 +116,8 @@ namespace Time_Zone.BusinessLogic.Core
                 var hashedPassword = LoginHelper.HashGen(data.Password);
                 var newUser = new UDbTable
                 {
-
                     Credentials = data.Username,
-                    Password = data.Password,
+                    Password = hashedPassword,
                     Email = data.Email,
                     LastLogin = DateTime.Now,
                     level = LevelAcces.User
@@ -124,20 +138,51 @@ namespace Time_Zone.BusinessLogic.Core
             }
         }
 
+        internal UserMinimal UserCookie(string cookie)
+        {
+            Session session;
+            UDbTable curentUser;
+
+            using (var db = new SessionContext())
+            {
+                session = db.Sessions.FirstOrDefault(s => s.CookieString == cookie && s.ExpireTime > DateTime.Now);
+            }
+
+            if (session == null) return null;
+            using (var db = new UserContext())
+            {
+                var validate = new EmailAddressAttribute();
+                if (validate.IsValid(session.Username))
+                {
+                    curentUser = db.Users.FirstOrDefault(u => u.Email == session.Username);
+                }
+                else
+                {
+                    curentUser = db.Users.FirstOrDefault(u => u.Credentials == session.Username);
+                }
+            }
+
+            if (curentUser == null) return null;
+            var userminimal = Mapper.Map<UserMinimal>(curentUser);
+
+            return userminimal;
+        }
 
         internal LevelStatus CheckLevelLogic(string keySession)
         {
             return new LevelStatus();
         }
 
-        internal ProductDetail GetProductUser(int id)
+        internal ProductDetail GetProdUser(int id)
         {
             return new ProductDetail();
         }
+
         public bool UserSessionStatus()
         {
             return true;
         }
+
 
     }
 }

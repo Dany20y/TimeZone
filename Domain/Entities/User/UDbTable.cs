@@ -8,32 +8,35 @@ using System.Threading.Tasks;
 using Time_Zone.Domain.Enums;
 
 namespace Domain.Entities.User
-{ 
-    public class UDbTable
 {
+    public class UDbTable
+    {
 
-    [Key]
-    [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-    public int Id { get; set; }
+        [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public int Id { get; set; }
 
     [Required]
     [Display(Name = "Username")]
     [StringLength(30, MinimumLength = 2, ErrorMessage = "Username cannot be longer than 30 characters.")]
     public string Credentials { get; set; }
 
-    [Required]
-    [Display(Name = "Password")]
-    [StringLength(50, MinimumLength = 8, ErrorMessage = "Password cannot be shorter than 8 characters.")]
-    public string Password { get; set; }
+        [Required]
+        [Display(Name = "Email Address")]
+        [StringLength(30)]
+        public string Email { get; set; }
 
-    [Required]
-    [Display(Name = "Email Address")]
-    [StringLength(30)]
-    public string Email { get; set; }
 
-    [DataType(DataType.Date)]
-    public DateTime LastLogin { get; set; }
+        [Required]
+        [Display(Name = "Password")]
+        [StringLength(50, MinimumLength = 8, ErrorMessage = "Password cannot be shorter than 8 characters.")]
+        public string Password { get; set; }
 
-    public LevelAcces level { get; set; }
+
+        [DataType(DataType.Date)]
+        public DateTime LastLogin { get; set; }
+
+        public LevelAcces level { get; set; }
+    }
 }
-}
+

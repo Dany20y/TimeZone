@@ -1,23 +1,23 @@
-﻿using Time_Zone.BusinessLogic.Interfaces;
-using Microsoft.Ajax.Utilities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Security.Cryptography;
-using System.Web;
+﻿using System;
 using System.Web.Mvc;
-using Time_Zone.BusinessLogic;
 using Time_Zone.Models;
-using Time_Zone.Domain.Entities.User;
-using Time_Zone.Domain.Entities.User.Global;
 using System.Web.Security;
+using System.Web;
+using Time_Zone.BusinessLogic;
+using Time_Zone.Domain.Entities.Res;
+using Time_Zone.Domain.Entities.User;
+using AutoMapper;
+using BusinessLogic;
+using BusinessLogic.Interfaces;
+using Domain.Entities.User;
+
 
 namespace Time_Zone.Controllers
 {
     public class LoginController : Controller
     {
         private readonly ISession _session;
+
         public LoginController()
         {
             var bl = new BussinesLogic();
@@ -29,12 +29,35 @@ namespace Time_Zone.Controllers
             return View();
         }
 
+
+
         [HttpPost]
         [ValidateAntiForgeryToken]
+        public ActionResult Login(userLogin login) 
         public ActionResult Login(userLogin login)
         {
+            HttpContext.Session["UserProfile"] = login;
+
             if (ModelState.IsValid)
             {
+                var data = Mapper.Map<ULoginData>(login);
+                data.LoginIp = Request.UserHostAddress.ToString();
+                data.LoginDateTime = DateTime.Now;
+
+                ActionStatus resp = _session.UserLogin(data);
+                if (resp.Status)
+                {
+                    FormsAuthentication.SetAuthCookie(data.Email, false);
+                    HttpCookie cookie = _session.GenCookie(data.Email);
+                    ControllerContext.HttpContext.Response.Cookies.Add(cookie);
+                    Session["Username"] = data.Email;
+
+                    // Check if the user is an admin
+                    if (resp.StatusMessage == "Admin")
+                    {
+                        // Set user role to "Admin"
+                        FormsAuthentication.SetAuthCookie(data.Email, false);
+                        Session["UserRole"] = "Admin";
                 ULoginData data = new ULoginData
                 {
                     Credential = login.Email,
@@ -43,19 +66,28 @@ namespace Time_Zone.Controllers
                     LoginDataTime = DateTime.Now,
                 };
 
-                var userLogin = _session.UserLogin(data);
-                if (userLogin.Status)
-                {
-                    return RedirectToAction("Index", "Home");
+                        // Redirect to admin dashboard or profile
+                        return RedirectToAction("Admin", "Admin");
+                    }
+                    else
+                    {
+                        // Set user role to "User"
+                        FormsAuthentication.SetAuthCookie(data.Email, false);
+                        Session["UserRole"] = "User";
+
+                        // Redirect to user dashboard or profile
+                        return RedirectToAction("Index", "Home");
+                    }
                 }
                 else
                 {
-                    ModelState.AddModelError("", "Invalid username or password.");
-                    return RedirectToAction("About", "Home");
-
+                    // Login failed, display error message
+                    ViewBag.ErrorMessage = resp.StatusMessage;
+                    return View(login);
                 }
             }
             return View(login);
         }
+
     }
 }
