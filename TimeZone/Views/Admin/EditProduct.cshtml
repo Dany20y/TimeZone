@@ -1,0 +1,79 @@
+﻿@using Time_Zone.Domain.Entities.Product
+@model Product
+
+@{
+    ViewBag.Title = "Edit Product";
+    Layout = "~/Views/Shared/_Admin.cshtml";
+}
+
+<h2>@ViewBag.Title</h2>
+
+@using (Html.BeginForm("EditProduct", "Admin", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.HiddenFor(model => model.Id)
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.Name)
+        @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control", @required = "required" } })
+        @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.Price)
+        @Html.EditorFor(model => model.Price, new { htmlAttributes = new { @class = "form-control", @required = "required" } })
+        @Html.ValidationMessageFor(model => model.Price, "", new { @class = "text-danger" })
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.Description)
+        @Html.TextAreaFor(model => model.Description, new { htmlAttributes = new { @class = "form-control", rows = 20, @required = "required" } })
+        @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.CategoryId)
+        @Html.DropDownListFor(model => model.CategoryId, (IEnumerable<SelectListItem>)ViewBag.Categories, "--Select Category--", new { @class = "form-control", @required = "required" })
+        @Html.ValidationMessageFor(model => model.CategoryId)
+    </div>
+
+    if (Model.ImagePath != null)
+    {
+        <div class="form-group">
+            <img src="@Url.Content(Model.ImagePath)" alt="Product Image" style="max-width: 100%; height: auto;" />
+        </div>
+    }
+
+    <div class="form-group">
+        <label for="image">Product Image</label>
+        <input type="file" name="image" required />
+    </div>
+
+    <button type="submit" class="btn btn-success">Update</button>
+}
+@section Scripts {
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const form = document.querySelector('form');
+        form.addEventListener('submit', function(event) {
+            let isValid = true;
+            const inputs = form.querySelectorAll('input[required], textarea[required], select[required]');
+
+            inputs.forEach(function(input) {
+                if (!input.value.trim()) {
+                    isValid = false;
+                    input.classList.add('is-invalid'); // Add Bootstrap's is-invalid class to highlight
+                } else {
+                    input.classList.remove('is-invalid');
+                }
+            });
+
+            if (!isValid) {
+                event.preventDefault(); // Stop form submission
+                alert('Please fill in all required fields.');
+            }
+        });
+    });
+    </script>
+}
+

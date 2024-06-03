@@ -8,8 +8,8 @@ namespace Time_Zone.Domain.Enums
 {
     public enum LevelAcces
     {
-        None = 0,
-        User = 1,
-        Admin = 2
+        User,
+        Visitor,
+        Admin
     }
 }

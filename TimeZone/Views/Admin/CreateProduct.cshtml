@@ -1,0 +1,74 @@
+﻿@using Time_Zone.Domain.Entities.Product
+@model Product
+
+@{
+    ViewBag.Title = "Create Product";
+    Layout = "~/Views/Shared/_Admin.cshtml";
+}
+
+<h2>@ViewBag.Title</h2>
+
+@using (Html.BeginForm("CreateProduct", "Admin", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    @Html.AntiForgeryToken()
+
+    <div>
+        @Html.LabelFor(model => model.Name)
+        @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control" } })
+        @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
+    </div>
+
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.Price)
+        @Html.EditorFor(model => model.Price, new { htmlAttributes = new { @class = "form-control" } })
+        @Html.ValidationMessageFor(model => model.Price, "", new { @class = "text-danger" })
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.Description)
+        @Html.TextAreaFor(model => model.Description, new { htmlAttributes = new { @class = "form-control", rows = 5 } })
+        @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.CategoryId)
+        @Html.DropDownListFor(model => model.CategoryId, (IEnumerable<SelectListItem>)ViewBag.Categories, "--Select Category--", new { @class = "form-control" })
+        @Html.ValidationMessageFor(model => model.CategoryId)
+    </div>
+
+
+    <div class="form-group">
+        <label for="image">Product Image</label>
+        <input type="file" name="image" />
+    </div>
+
+    <button type="submit" class="btn btn-primary">Create</button>
+}
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        var form = document.querySelector('form');
+        form.addEventListener('submit', function (event) {
+            var isValid = true;
+            var inputs = form.querySelectorAll('input[required], textarea[required], select[required]');
+
+            inputs.forEach(function (input) {
+                if (!input.value.trim()) {
+                    isValid = false;
+                    input.style.borderColor = 'red'; // Highlight the input border in red if not valid
+                    input.nextElementSibling.textContent = 'This field is required'; // Assuming ValidationMessage spans are immediately after each input
+                    input.nextElementSibling.style.color = 'red';
+                } else {
+                    input.style.borderColor = ''; // Reset border color
+                    input.nextElementSibling.textContent = ''; // Clear validation message
+                }
+            });
+
+            if (!isValid) {
+                event.preventDefault(); // Prevent form submission if validation fails
+                alert('Please fill in all required fields.');
+            }
+        });
+    });
+</script>

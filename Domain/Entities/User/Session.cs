@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Time_Zone.Domain.User
+namespace Time_Zone.Domain.Entities.User
 {
     public class Session
     {

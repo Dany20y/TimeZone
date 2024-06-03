@@ -1,11 +1,10 @@
 ﻿using System;
 using System.Linq;
 using System.Web.Mvc;
-using Time_Zone.BusinessLogic;
+using Time_Zome.BussinesLogic;
+using Time_Zone.BussinessLogic;
 using Time_Zone.Domain.Enums;
 using Time_Zone.Web.Extension;
-using BusinessLogic;
-using BusinessLogic.Interfaces;
 
 namespace Time_Zone.Controllers
 {
@@ -14,7 +13,7 @@ namespace Time_Zone.Controllers
         private readonly ISession _session;
         public BaseController()
         {
-            var bl = new BussinesLogic();
+            var bl = new BusinessLogic();
             _session = bl.GetSessionBL();
         }
 

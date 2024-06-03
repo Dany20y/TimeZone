@@ -1,188 +1,265 @@
 ﻿using System;
-using System.Linq;
-using Domain.Entities;
-using System.ComponentModel;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Data.Entity;
-using Helpers;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 using System.Web;
 using AutoMapper;
-using Time_Zone.BusinessLogic.DBModel.Seed;
-using Time_Zone.Domain.Entities;
-using Time_Zone.Domain.Entities.Res;
-using Time_Zone.Domain.Entities.User.Global;
+using System.Net;
+using System.Net.Http;
+using Helpers;
+using Time_Zone.BussinessLogic.AutoMapper;
+using Time_Zone.BussinessLogic.DBModel.Seed;
+using Time_Zone.BussinessLogic.DBModel;
+using Time_Zone.Domain.Entities.Product;
 using Time_Zone.Domain.Entities.User;
+using Time_Zone.Helpers;
 using Time_Zone.Domain.Enums;
-using Time_Zone.Domain;
-using System.ComponentModel.DataAnnotations;
-using Domain.Entities.User;
-using Time_Zone.Domain.User;
-using Domain.Entities.Product;
+using Time_Zone.BussinesLogic.DBModel;
 
-
-namespace BusinessLogic.Core
+namespace eUseControl.BusinessLogic.Core
 {
     public class UserApi
     {
-        internal ActionStatus UserLogData(ULoginData login)
-        {
-            UDbTable result;
-            var pass = LoginHelper.HashGen(login.Password);
-            var validate = new EmailAddressAttribute();
-            var isValidEmail = validate.IsValid(login.Username);
 
-            using (var db = new UserContext())
+
+        internal ULoginResp UserLoginAction(UserLogin data)
+        {
+            ULoginData result;
+            var validate = new EmailAddressAttribute();
+            if (validate.IsValid(data.Credential))
             {
-                result = isValidEmail
-                    ? db.Users.FirstOrDefault(u => u.Email == login.Email)
-                    : db.Users.FirstOrDefault(u => u.Credentials == login.Username && u.Password == pass);
+                var pass = LoginHelper.HashGen(data.Password);
+                using (var db = new UserContext())
+                {
+                    result = db.Users.FirstOrDefault(u => u.Email == data.Credential && u.Password == pass);
+                }
+            }
+            else
+            {
+                var pass = LoginHelper.HashGen(data.Password);
+                using (var db = new UserContext())
+                {
+                    result = db.Users.FirstOrDefault(u => u.Username == data.Credential && u.Password == pass);
+                }
             }
 
             if (result == null)
             {
-                return new ActionStatus
-                {
-                    Status = false,
-                    StatusMessage = "The username or password is incorrect"
-                };
+                return new ULoginResp { Status = false, StatusMsg = "The Username or Password is Incorrect" };
             }
 
-            if (result != null && result.Password == pass)
+            using (var todo = new UserContext())
             {
-                using (var todo = new UserContext())
-                {
+                result.LastIp = data.LoginIp;
+                result.LastLogin = data.LoginDateTime;
+                todo.Entry(result).State = EntityState.Modified;
+                todo.SaveChanges();
+            }
+            LevelAcces userRole = (LevelAcces)result.Level;
+            return new ULoginResp { Status = true, Level = userRole };
+        }
 
-                    /*  result. = login.LoginIp;*/
-                    result.LastLogin = login.LoginDateTime;
-                    todo.Entry(result).State = EntityState.Modified;
-                    todo.SaveChanges();
-                }
-                if (result.level == LevelAcces.Admin)
-                    return new ActionStatus { Status = true, StatusMessage = "Admin" };
-                else
-                    return new ActionStatus { Status = true, StatusMessage = "User" };
+        internal ULoginResp UserRegisterAction(URegister data)
+        {
+            var validate = new EmailAddressAttribute();
+            if (!validate.IsValid(data.Email))
+            {
+                return new ULoginResp { Status = false, StatusMsg = "Invalid email address." };
             }
 
-            return new ActionStatus { Status = true };
+            var pass = LoginHelper.HashGen(data.Password);
+            using (var db = new UserContext())
+            {
+                using (var transaction = db.Database.BeginTransaction())
+                {
+                    try
+                    {
+                        // Check if the email is already in use
+                        var existingUser = db.Users.FirstOrDefault(u => u.Email == data.Email);
+                        if (existingUser != null)
+                        {
+                            return new ULoginResp { Status = false, StatusMsg = "Email is already in use." };
+                        }
+
+                        // Create a new user entry
+                        var newUser = new ULoginData
+                        {
+                            Username = data.Email,
+                            Email = data.Email,
+                            Password = pass,
+                            LastLogin = DateTime.Now,
+                            LastIp = data.LoginIp,
+                            Level = LevelAcces.User // Setting default user level here
+                        };
+
+                        db.Users.Add(newUser);
+                        db.SaveChanges();
+                        transaction.Commit();
+
+                        return new ULoginResp { Status = true, Level = LevelAcces.User, StatusMsg = "Registration successful." };
+                    }
+                    catch (Exception ex)
+                    {
+                        transaction.Rollback();
+                        // Log exception details here using your preferred logging framework
+                        return new ULoginResp { Status = false, StatusMsg = "Registration failed due to a server error." };
+                    }
+                }
+            }
+        }
+
+        public bool UpdateUserPassword(string username, string oldPassword, string newPassword)
+        {
+            using (var db = new UserContext())
+            {
+                var user = db.Users.FirstOrDefault(u => u.Username == username);
+                if (user != null && user.Password == LoginHelper.HashGen(oldPassword))
+                {
+                    user.Password = LoginHelper.HashGen(newPassword);
+                    db.SaveChanges();
+                    return true;
+                }
+                return false;
+            }
         }
 
         internal HttpCookie Cookie(string loginCredential)
         {
-            var apiCookie = new HttpCookie("X-KEY")
-            {
-                Value = CookieGenerator.Create(loginCredential)
-            };
-
             using (var db = new SessionContext())
             {
-                var isValidEmail = new EmailAddressAttribute().IsValid(loginCredential);
-                var curent = db.Sessions.FirstOrDefault(e => e.Username == loginCredential);
-
-                if (curent != null)
+                var validate = new EmailAddressAttribute();
+                if (validate.IsValid(loginCredential))
                 {
-                    curent.CookieString = apiCookie.Value;
-                    curent.ExpireTime = DateTime.Now.AddMinutes(1);
+                    DateTime cc = DateTime.Now;
+                    Session curent = db.Sessions.FirstOrDefault(e => (e.ExpireTime > cc && e.Username == loginCredential));
+                    // System.Diagnostics.Debug.WriteLine("0 "+curent.CookieString+" "+curent.ExpireTime+" "+curent.Username);
+                    if (curent != null)
+                    {
+                        // Session exists and is not expired
+                        return new HttpCookie("X-KEY", curent.CookieString);
+                    }
+                    else
+                    {
+                        // Session doesn't exist or is expired
+                        var apiCookie = new HttpCookie("X-KEY")
+                        {
+                            Value = CookieGenerator.Create(loginCredential)
+                        };
+
+                        // Update or create a new session
+                        curent = db.Sessions.FirstOrDefault(e => e.Username == loginCredential);
+                        if (curent == null)
+                        {
+                            // Create a new session
+                            curent = new Session
+                            {
+                                Username = loginCredential,
+                                CookieString = apiCookie.Value,
+                                ExpireTime = DateTime.Now.AddMinutes(10)
+                            };
+                            System.Diagnostics.Debug.WriteLine("20 " + curent.CookieString + " " + curent.ExpireTime + " " + curent.Username);
+                            db.Sessions.Add(curent);
+                            db.SaveChanges();
+                        }
+                        else
+                        {
+                            // Update existing session with new cookie and expiration time
+                            curent.CookieString = apiCookie.Value;
+                            curent.ExpireTime = DateTime.Now.AddMinutes(10);
+                            System.Diagnostics.Debug.WriteLine("20 " + curent.CookieString + " " + curent.ExpireTime + " " + curent.Username);
+                            // db.Entry(curent).State = EntityState.Modified;
+                            db.SaveChanges();
+                        }
+
+                        // db.SaveChanges();
+                        return apiCookie;
+                    }
                 }
                 else
                 {
-                    db.Sessions.Add(new Session
-                    {
-                        Username = loginCredential,
-                        CookieString = apiCookie.Value,
-                        ExpireTime = DateTime.Now.AddMinutes(1)
-                    });
+                    // Handle invalid email address
+                    // For example, throw an exception or return a default cookie
+                    throw new ArgumentException("Invalid email address.");
                 }
-
-                db.SaveChanges();
             }
-
-            return apiCookie;
         }
 
-        public ActionStatus RegisterUserAction(URegisterData data)
+        internal Session GetSession(string token)
         {
-            try
+            using (var sessionDb = new SessionContext())
             {
-                using (var db = new UserContext())
-                {
-                    bool emailExists = db.Users.Any(u => u.Email == data.Email);
-                    bool usernameExists = db.Users.Any(u => u.Credentials == data.Username);
+                Session session = sessionDb.Sessions.FirstOrDefault(s => (s.CookieString == token));
 
-                    if (emailExists || usernameExists)
-                    {
-                        return new ActionStatus { Status = false, StatusMessage = "User with the provided email or username already exists" };
-                    }
+                return session;
+            }
+        }
+
+        internal void LogoutUser(string token, HttpContextBase httpContext)
+        {
+            using (var sessionDb = new SessionContext())
+            {
+                Session session = sessionDb.Sessions.FirstOrDefault(s => (s.CookieString == token));
+                if (session != null)
+                {
+                    session.ExpireTime = DateTime.Now.AddDays(-1);
+                    sessionDb.SaveChanges();
                 }
-
-                var hashedPassword = LoginHelper.HashGen(data.Password);
-                var newUser = new UDbTable
+            }
+            if (httpContext.Request.Cookies["X-KEY"] != null)
+            {
+                var cookie = new HttpCookie("X-KEY")
                 {
-                    Credentials = data.Username,
-                    Password = hashedPassword,
-                    Email = data.Email,
-                    LastLogin = DateTime.Now,
-                    level = LevelAcces.User
+                    Expires = DateTime.Now.AddDays(-1),
+                    HttpOnly = true
                 };
-
-                using (var db = new UserContext())
-                {
-                    db.Users.Add(newUser);
-                    db.SaveChanges();
-                }
-
-                return new ActionStatus { Status = true, StatusMessage = "User registered successfully" };
+                httpContext.Response.Cookies.Add(cookie);
             }
-            catch (Exception ex)
-            {
-                // Log the exception or handle it in an appropriate way
-                return new ActionStatus { Status = false, StatusMessage = $"An error occurred: {ex.Message}" };
-            }
+
         }
 
         internal UserMinimal UserCookie(string cookie)
         {
-            Session session;
-            UDbTable curentUser;
-
-            using (var db = new SessionContext())
+            using (var sessionDb = new SessionContext())
             {
-                session = db.Sessions.FirstOrDefault(s => s.CookieString == cookie && s.ExpireTime > DateTime.Now);
-            }
-
-            if (session == null) return null;
-            using (var db = new UserContext())
-            {
-                var validate = new EmailAddressAttribute();
-                if (validate.IsValid(session.Username))
+                DateTime cc = DateTime.Now;
+                System.Diagnostics.Debug.WriteLine("string Cookie: " + cookie);
+                Session session = sessionDb.Sessions.FirstOrDefault(s => (s.CookieString == cookie) && (s.ExpireTime > cc));
+                /*System.Diagnostics.Debug.WriteLine("UserMinimal: " + cc + " " + session.CookieString + " " + cookie + " " + session.ExpireTime);*/
+                if (session == null)
                 {
-                    curentUser = db.Users.FirstOrDefault(u => u.Email == session.Username);
+                    System.Diagnostics.Debug.WriteLine("Session not found or expired");
+                    return null;
                 }
-                else
+
+                using (var userDb = new UserContext())
                 {
-                    curentUser = db.Users.FirstOrDefault(u => u.Credentials == session.Username);
+                    var validate = new EmailAddressAttribute();
+                    ULoginData curentUser = null;
+                    if (validate.IsValid(session.Username))
+                    {
+                        curentUser = userDb.Users.FirstOrDefault(u => u.Email == session.Username);
+                    }
+                    else
+                    {
+                        curentUser = userDb.Users.FirstOrDefault(u => u.Username == session.Username);
+                    }
+
+                    if (curentUser == null)
+                    {
+                        System.Diagnostics.Debug.WriteLine("User not found");
+                        return null;
+                    }
+                    // Assuming you've configured AutoMapper somewhere during application startup
+                    var mapperConfig = AutoMapperConfig.ConfigureMappings();
+                    var mapper = mapperConfig.CreateMapper();
+                    // Use the mapper instance to perform mappings
+                    var userMinimal = mapper.Map<UserMinimal>(curentUser);
+                    return userMinimal;
                 }
             }
-
-            if (curentUser == null) return null;
-            var userminimal = Mapper.Map<UserMinimal>(curentUser);
-
-            return userminimal;
         }
-
-        internal LevelStatus CheckLevelLogic(string keySession)
-        {
-            return new LevelStatus();
-        }
-
-        internal ProductDetail GetProdUser(int id)
-        {
-            return new ProductDetail();
-        }
-
-        public bool UserSessionStatus()
-        {
-            return true;
-        }
-
-
     }
 }

@@ -4,9 +4,9 @@ using System.Data.Entity;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Time_Zone.Domain.User;
+using Time_Zone.Domain.Entities.User;
 
-namespace Time_Zone.BusinessLogic.DBModel.Seed
+namespace Time_Zone.BussinessLogic.DBModel.Seed
 {
     public class SessionContext: DbContext
     {

@@ -1,18 +1,16 @@
 ﻿using System;
-using System.Web.Mvc;
-using Time_Zone.Models;
-using System.Web.Security;
+using System.Collections.Generic;
+using System.Linq;
 using System.Web;
-using Time_Zone.BusinessLogic;
-using Time_Zone.Domain.Entities.Res;
+using System.Web.Mvc;
+using System.Web.Security;
+using System.Web.SessionState;
+using Time_Zome.BussinesLogic;
+using Time_Zone.BussinessLogic;
 using Time_Zone.Domain.Entities.User;
-using AutoMapper;
-using BusinessLogic;
-using BusinessLogic.Interfaces;
-using Domain.Entities.User;
+using Time_Zone.Domain.Enums;
 
-
-namespace Time_Zone.Controllers
+namespace Time_Zome.Controllers
 {
     public class LoginController : Controller
     {
@@ -20,7 +18,7 @@ namespace Time_Zone.Controllers
 
         public LoginController()
         {
-            var bl = new BussinesLogic();
+            var bl = new BusinessLogic();
             _session = bl.GetSessionBL();
         }
 
@@ -29,65 +27,122 @@ namespace Time_Zone.Controllers
             return View();
         }
 
+        public ActionResult Logout()
+        {
+
+            if (Request.Cookies["X-KEY"] != null)
+            {
+                var token = Request.Cookies["X-KEY"].Value;
+                _session.LogoutUserByCookie(token, HttpContext);
+            }
+
+            Session.Clear();
+            FormsAuthentication.SignOut();
+
+            return RedirectToAction("Login", "Login");
+        }
 
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Login(userLogin login) 
-        public ActionResult Login(userLogin login)
+        public ActionResult Index(UserLogin login)
         {
-            HttpContext.Session["UserProfile"] = login;
+            if (!ModelState.IsValid)
+            {
+                return RedirectToAction("About", "Home");
+            }
 
+            // Initialize the login details
+            UserLogin data = new UserLogin
+            {
+                Credential = login.Credential,
+                Password = login.Password,
+                LoginIp = Request.UserHostAddress,
+                LoginDateTime = DateTime.Now,
+            };
+
+            // Attempt to log the user in
+            var userLogin = _session.UserLogin(data);
+            if (!userLogin.Status)
+            {
+                ModelState.AddModelError("", "Invalid username or password.");
+                return RedirectToAction("About", "Home");
+            }
+
+            // Generate session token
+            var sessionToken = _session.GenCookie(login.Credential);
+
+            // Set session token cookie
+            Response.Cookies.Add(sessionToken);
+
+            // Check if the cookie exists after setting it
+            var cookie = Request.Cookies["X-KEY"];
+            if (cookie == null)
+            {
+                return RedirectToAction("Login", "Login");
+            }
+
+            // Log the token from the cookie
+            var token = cookie.Value;
+
+            // Fetch user details using the token
+            var userMinimal = _session.GetUserByCookie(token);
+            if (userMinimal == null)
+            {
+                System.Diagnostics.Debug.WriteLine("No user found with the given token.");
+                return RedirectToAction("Login", "Login");
+            }
+
+            // Store username in session
+            Session["Username"] = userMinimal.Username;
+
+            // Redirect based on user role
+            if (userLogin.Level == LevelAcces.Admin)
+            {
+                return RedirectToAction("Admin", "Admin");
+            }
+
+            return RedirectToAction("Index", "Home");
+        }
+
+        public ActionResult Register()
+        {
+            return View();
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Register(URegister register)
+        {
             if (ModelState.IsValid)
             {
-                var data = Mapper.Map<ULoginData>(login);
-                data.LoginIp = Request.UserHostAddress.ToString();
-                data.LoginDateTime = DateTime.Now;
-
-                ActionStatus resp = _session.UserLogin(data);
-                if (resp.Status)
+                URegister data = new URegister
                 {
-                    FormsAuthentication.SetAuthCookie(data.Email, false);
-                    HttpCookie cookie = _session.GenCookie(data.Email);
-                    ControllerContext.HttpContext.Response.Cookies.Add(cookie);
-                    Session["Username"] = data.Email;
-
-                    // Check if the user is an admin
-                    if (resp.StatusMessage == "Admin")
-                    {
-                        // Set user role to "Admin"
-                        FormsAuthentication.SetAuthCookie(data.Email, false);
-                        Session["UserRole"] = "Admin";
-                ULoginData data = new ULoginData
-                {
-                    Credential = login.Email,
-                    Password = login.Password,
+                    Email = register.Email,
+                    Username = register.Email,
+                    Password = register.Password,
                     LoginIp = Request.UserHostAddress,
-                    LoginDataTime = DateTime.Now,
+                    LoginDateTime = DateTime.Now,
+                    Role = LevelAcces.User,
                 };
 
-                        // Redirect to admin dashboard or profile
-                        return RedirectToAction("Admin", "Admin");
-                    }
-                    else
-                    {
-                        // Set user role to "User"
-                        FormsAuthentication.SetAuthCookie(data.Email, false);
-                        Session["UserRole"] = "User";
-
-                        // Redirect to user dashboard or profile
-                        return RedirectToAction("Index", "Home");
-                    }
+                var userRegister = _session.UserRegister(data);
+                if (userRegister.Status)
+                {
+                    ViewBag.Status = "Succes";
+                    return RedirectToAction("Index", "Home");
                 }
                 else
                 {
-                    // Login failed, display error message
-                    ViewBag.ErrorMessage = resp.StatusMessage;
-                    return View(login);
+                    ViewBag.Status = "Insucces";
+                    return View("Register");
                 }
+
             }
-            return View(login);
+
+
+            return View("Register");
         }
 
     }
+
 }

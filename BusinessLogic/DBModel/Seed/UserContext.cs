@@ -1,5 +1,4 @@
-﻿using Domain.Entities.User;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
@@ -7,16 +6,15 @@ using System.Text;
 using System.Threading.Tasks;
 using Time_Zone.Domain.Entities.User;
 
-
-namespace Time_Zone.BusinessLogic.DBModel.Seed
+namespace Time_Zone.BussinesLogic.DBModel
 {
-    public class UserContext : DbContext
+    class UserContext : DbContext
     {
         public UserContext() :
-        base("name = Time_Zone")
+            base("name=Time_Zone") // connectionstring name define in your web.config
         {
         }
 
-        public virtual DbSet<UDbTable> Users { get; set; }
+        public virtual DbSet<ULoginData> Users { get; set; }
     }
 }
