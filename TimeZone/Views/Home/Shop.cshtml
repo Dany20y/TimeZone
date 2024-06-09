@@ -1,4 +1,4 @@
-﻿@model IEnumerable<Time_Zone.Domain.Entities.Product.Product>
+﻿@model Time_Zone.Models.ProductsViewModel
 
 @{
     ViewBag.Title = "Shop";
@@ -86,38 +86,35 @@
                 <!--Nav Button  -->
                 <nav>
                     <div class="nav nav-tabs" id="nav-tab" role="tablist">
-                        <a class="nav-item nav-link active" id="nav-home-tab" data-toggle="tab" href="#nav-home" role="tab" aria-controls="nav-home" aria-selected="true">Newest Arrivals</a>
-                        <a class="nav-item nav-link" id="nav-profile-tab" data-toggle="tab" href="#nav-profile" role="tab" aria-controls="nav-profile" aria-selected="false">Price high to low</a>
-                        <a class="nav-item nav-link" id="nav-contact-tab" data-toggle="tab" href="#nav-contact" role="tab" aria-controls="nav-contact" aria-selected="false">Most popular</a>
+                        <a class="nav-item nav-link active" id="nav-low-to-high-tab" data-toggle="tab" href="#nav-low-to-high" role="tab" aria-controls="nav-low-to-high" aria-selected="true" onclick="sortProducts('priceLowToHigh')">Price low to high</a>
+                        <a class="nav-item nav-link" id="nav-high-to-low-tab" data-toggle="tab" href="#nav-high-to-low" role="tab" aria-controls="nav-high-to-low" aria-selected="false" onclick="sortProducts('priceHighToLow')">Price high to low</a>
                     </div>
                 </nav>
                 <!--End Nav Button  -->
             </div>
-            <!-- Grid and List view -->
-            <div class="grid-list-view">
+            <!-- Câmpul de căutare după nume -->
+            <div class="search-bar">
+                <input type="text" id="searchInput" onkeyup="filterByName()" placeholder="Search by name..." class="form-control" style="max-width: 300px;">
             </div>
-            <!-- Select items -->
-            <div class="select-this">
-                <form action="#">
-                    <div class="select-itms">
-                        <select name="select" id="select1">
-                            <option value="40">40 per page</option>
-                            <option value="50">50 per page</option>
-                            <option value="60">60 per page</option>
-                            <option value="70">70 per page</option>
-                        </select>
-                    </div>
-                </form>
+            <!-- Select Category -->
+            <div class="select-category">
+                <select id="categoryFilter" onchange="filterByCategory()">
+                    <option value="all">Toate categoriile</option>
+                    @foreach (var category in Model.Categories)
+                    {
+                        <option value="@category">@category</option>
+                    }
+                </select>
             </div>
         </div>
         <!-- Nav Card -->
         <div class="tab-content" id="nav-tabContent">
             <!-- card one -->
-            <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
-                <div class="row">
-                    @foreach (var product in Model)
+            <div class="tab-pane fade show active" id="nav-low-to-high" role="tabpanel" aria-labelledby="nav-low-to-high-tab">
+                <div class="row" id="productContainer">
+                    @foreach (var product in Model.Products)
                     {
-                        <div class="col-xl-4 col-lg-4 col-md-6 col-sm-12 product-card">
+                        <div class="col-xl-4 col-lg-4 col-md-6 col-sm-12 product-card" data-category="@product.Category.Name" data-price="@product.Price" data-name="@product.Name.ToLower()">
                             <div class="single-popular-items mb-50 text-center">
                                 <div class="popular-img">
                                     @if (!string.IsNullOrEmpty(product.ImagePath))
@@ -151,13 +148,66 @@
                     }
                 </div>
             </div>
-            <!-- Other Tabs (high to low price, most popular) would be similar to the one above -->
         </div>
         <!-- End Nav Card -->
     </div>
 </section>
-<!-- Latest Products End -->
-<!--? Shop Method Start-->
+
+<script>
+    function filterByCategory() {
+        var selectedCategory = document.getElementById("categoryFilter").value;
+        var products = document.querySelectorAll(".product-card");
+
+        products.forEach(function (product) {
+            var productCategory = product.getAttribute("data-category");
+
+            if (selectedCategory === "all" || productCategory === selectedCategory) {
+                product.style.display = "block";
+            } else {
+                product.style.display = "none";
+            }
+        });
+    }
+
+    function sortProducts(sortType) {
+        var products = Array.from(document.querySelectorAll(".product-card")).filter(function (product) {
+            return product.style.display !== "none";
+        });
+
+        products.sort(function (a, b) {
+            if (sortType === 'priceLowToHigh') {
+                return parseFloat(a.getAttribute("data-price")) - parseFloat(b.getAttribute("data-price"));
+            } else if (sortType === 'priceHighToLow') {
+                return parseFloat(b.getAttribute("data-price")) - parseFloat(a.getAttribute("data-price"));
+            }
+        });
+
+        var productContainer = document.getElementById("productContainer");
+        products.forEach(function (product) {
+            productContainer.appendChild(product);
+        });
+    }
+
+    function filterByName() {
+        var searchText = document.getElementById("searchInput").value.toLowerCase();
+        var products = document.querySelectorAll(".product-card");
+
+        products.forEach(function (product) {
+            var productName = product.getAttribute("data-name");
+
+            if (productName.includes(searchText)) {
+                product.style.display = "block";
+            } else {
+                product.style.display = "none";
+            }
+        });
+    }
+
+    // Initialize with default sorting and filtering
+    filterByCategory();
+</script>
+
+<!-- Shop Method Start -->
 <div class="shop-method-area">
     <div class="container">
         <div class="method-wrapper">

@@ -8,11 +8,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Web;
+using Time_Zone.BussinesLogic;
 using Time_Zone.BussinessLogic.Core;
+using Time_Zone.BussinessLogic.DBModel;
 using Time_Zone.Domain.Entities.Product;
 using Time_Zone.Domain.Entities.User;
 
-namespace Time_Zome.BussinesLogic
+namespace Time_Zone.BussinesLogic
 {
 
     public class SessionBL : UserApi, ISession
@@ -28,6 +30,7 @@ namespace Time_Zome.BussinesLogic
         {
             return UserRegisterAction(data);
         }
+
 
         public HttpCookie GenCookie(string loginCredential)
         {
@@ -71,10 +74,19 @@ namespace Time_Zome.BussinesLogic
             return adminApi.FetchAllUsers();
         }
 
-
+/*
         public List<Product> GetAllProducts()
         {
             return _adminApi.FetchAllProducts();
+        }*/
+        public List<Product> GetAllProducts()
+        {
+            using (var context = new ProductContext()) // Asigură-te că folosești contextul corect
+            {
+                return context.Products
+                    .Include(p => p.Category) // Include categoria pentru fiecare produs
+                    .ToList();
+            }
         }
 
 

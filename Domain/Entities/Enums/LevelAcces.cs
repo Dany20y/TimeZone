@@ -9,7 +9,7 @@ namespace Time_Zone.Domain.Enums
     public enum LevelAcces
     {
         User,
-        Visitor,
+        Guest,
         Admin
     }
 }

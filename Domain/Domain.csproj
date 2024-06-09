@@ -59,6 +59,7 @@
   <ItemGroup>
     <Compile Include="Entities\Enums\LevelAcces.cs" />
     <Compile Include="Entities\Product\Cart.cs" />
+    <Compile Include="Entities\Product\CartLine.cs" />
     <Compile Include="Entities\Product\Category.cs" />
     <Compile Include="Entities\Product\Product.cs" />
     <Compile Include="Entities\Res\ActionStatus.cs" />

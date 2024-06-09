@@ -8,10 +8,10 @@ using System.Threading.Tasks;
 
 namespace Time_Zone.BussinessLogic.DBModel
 {
-    class ProductContext : DbContext
+    public class ProductContext : DbContext
     {
         public DbSet<Product> Products { get; set; }
-
+        public DbSet<CartLine> CartLines { get; set; }
         public ProductContext() : base("name=Time_Zone")
         {
         }

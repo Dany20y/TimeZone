@@ -70,7 +70,7 @@ namespace Time_Zone.BussinessLogic.Core
         {
             using (var _db = new ProductContext())
             {
-                return _db.Products.ToList();
+                 return _db.Products.ToList();
             }
         }
 

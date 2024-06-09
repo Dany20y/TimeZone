@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
-using Time_Zome.BussinesLogic;
+using Time_Zone.BussinesLogic;
 using Time_Zone.BussinessLogic;
 using Time_Zone.Domain.Entities.Product;
 
-namespace Time_Zome.Controllers
+namespace Time_Zone.Controllers
 {
     public class HomeController : Controller
     {
@@ -15,7 +15,7 @@ namespace Time_Zome.Controllers
 
         public HomeController()
         {
-            var bl = new BusinessLogic();
+            var bl = new Time_Zone.BusinessLogic.BusinessLogicService();
             _session = bl.GetSessionBL();
         }
 
@@ -47,13 +47,10 @@ namespace Time_Zome.Controllers
         {
             return View();
         }
-
         public ActionResult Shop()
         {
-            var products = _session.GetAllProducts();
-            return View(products);
+            return RedirectToAction("Shop", "Products");
         }
-
         public ActionResult Blog()
         {
             return View();

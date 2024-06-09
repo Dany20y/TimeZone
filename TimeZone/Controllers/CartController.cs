@@ -1,58 +1,105 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Web.Mvc;
-using Time_Zone.Domain.Entities.Product;
+using Time_Zone.BussinesLogic;
 using Time_Zone.BussinessLogic;
-using Time_Zome.BussinesLogic;
+using Time_Zone.BussinessLogic.DBModel;
+using Time_Zone.Domain.Entities.Product;
+using Time_Zone.Models;
+using Time_Zone.BusinessLogic;
 
-namespace Time_Zome.Controllers
+namespace Time_Zone.Controllers
 {
     public class CartController : Controller
     {
-        private ISession _session;
+        private readonly CartService _cartService;
+        private readonly ISession _session;
 
         public CartController()
         {
-            var bl = new BusinessLogic();
+            var bl = new BusinessLogicService();
             _session = bl.GetSessionBL();
+            _cartService = new CartService(new ProductContext());
         }
 
-
-
-    [HttpPost]
-        public ActionResult AddToCart(int id, int quantity)
+        [HttpPost]
+        public async Task<ActionResult> AddToCart(int id, int quantity)
         {
+            if (Session["Username"] == null)
+            {
+                TempData["Message"] = "Please log in to add products to the cart.";
+                return RedirectToAction("Login", "Login");
+            }
+
             var product = _session.GetProductById(id);
             if (product == null)
             {
                 return HttpNotFound();
             }
 
-            Cart cart = Session["Cart"] as Cart;
-            if (cart == null)
+            string userId = Session["Username"].ToString();
+            await _cartService.AddToCart(id, userId, quantity);
+
+            return RedirectToAction("Index");
+        }
+
+        public async Task<ActionResult> Index()
+        {
+            if (Session["Username"] == null)
             {
-                cart = new Cart();
+                TempData["Message"] = "Please log in to view your cart.";
+                return RedirectToAction("Login", "Login");
             }
 
-            cart.AddItem(product, quantity); // Use the specified quantity
-            Session["Cart"] = cart;
+            string userId = Session["Username"].ToString();
+            var cartLines = await _cartService.GetUserCart(userId);
 
-            return RedirectToAction("Index", "Cart"); // Redirect to the Cart index action
+            ViewBag.CartCount = cartLines.Sum(item => item.Quantity);
+
+            var cartViewModel = new Cart
+            {
+                Lines = cartLines
+            };
+
+            return View(cartViewModel);
         }
 
-        public ActionResult Index()
+        [HttpPost]
+        public async Task<ActionResult> RemoveFromCart(int id)
         {
-            var cart = Session["Cart"] as Cart;
-            ViewBag.CartCount = cart?.Lines.Sum(item => item.Quantity) ?? 0;
-            return View(cart);
+            if (Session["Username"] == null)
+            {
+                TempData["Message"] = "Please log in to remove products from the cart.";
+                return RedirectToAction("Login", "Login");
+            }
+
+            string userId = Session["Username"].ToString();
+            await _cartService.RemoveFromCart(id, userId);
+
+            return RedirectToAction("Index");
         }
 
-        public ActionResult RemoveFromCart(int id)
+        [HttpPost]
+        public async Task<ActionResult> UpdateQuantity(int id, int quantity)
         {
-            var cart = Session["Cart"] as Cart ?? new Cart();
-            cart.RemoveItem(id);
-            Session["Cart"] = cart;
+            if (Session["Username"] == null)
+            {
+                TempData["Message"] = "Please log in to update the quantity of products in the cart.";
+                return RedirectToAction("Login", "Login");
+            }
+
+            string userId = Session["Username"].ToString();
+            var cartLines = await _cartService.GetUserCart(userId);
+            var lineToUpdate = cartLines.FirstOrDefault(cl => cl.ProductId == id);
+
+            if (lineToUpdate != null)
+            {
+                lineToUpdate.Quantity = quantity;
+                await _cartService.UpdateCart(lineToUpdate);
+            }
+
             return RedirectToAction("Index");
         }
 
@@ -60,7 +107,13 @@ namespace Time_Zome.Controllers
         public ActionResult ProductCheckout(decimal? subtotal)
         {
             var cart = Session["Cart"] as Cart ?? new Cart();
-            ViewBag.Subtotal = subtotal ?? 0m;
+            decimal validSubtotal = subtotal ?? 0m;
+
+            // Verifică valoarea primitului subtotal
+            System.Diagnostics.Debug.WriteLine($"Subtotal primit: {validSubtotal}");
+
+            // Setează subtotalul în ViewBag
+            ViewBag.Subtotal = validSubtotal;
             return View(cart);
         }
 
@@ -86,27 +139,24 @@ namespace Time_Zome.Controllers
 
             decimal subtotalValue = Convert.ToDecimal(form["subtotal"] ?? "0");
 
+            // Procesare checkout
+
             return RedirectToAction("SuccessPayment");
         }
 
         [ChildActionOnly]
         public ActionResult CartSummary()
         {
-            var cart = Session["Cart"] as Cart ?? new Cart();
-            ViewBag.CartCount = cart.Lines.Sum(item => item.Quantity);
-            return PartialView("_CartSummary");
-        }
-
-        public ActionResult UpdateQuantity(int id, int quantity)
-        {
-            var cart = Session["Cart"] as Cart ?? new Cart();
-            var line = cart.Lines.FirstOrDefault(x => x.Product.Id == id);
-            if (line != null)
+            if (Session["Username"] == null)
             {
-                line.Quantity = quantity;
+                ViewBag.CartCount = 0;
+                return PartialView("_CartSummary");
             }
-            Session["Cart"] = cart;
-            return RedirectToAction("Index");
+
+            string userId = Session["Username"].ToString();
+            var cartLines = _cartService.GetUserCart(userId).Result;
+            ViewBag.CartCount = cartLines.Sum(item => item.Quantity);
+            return PartialView("_CartSummary");
         }
     }
 

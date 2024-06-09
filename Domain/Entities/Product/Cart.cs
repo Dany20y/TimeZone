@@ -1,24 +1,28 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Time_Zone.Domain.Entities.Product
 {
     public class Cart
     {
+        [Key]
+        public int Id { get; set; }
+
+        public string UserId { get; set; }
+
+        // Listă pentru a ține evidența liniilor de produse în coș
         private List<CartLine> lineCollection = new List<CartLine>();
 
         public void AddItem(Product product, int quantity)
         {
-            CartLine line = lineCollection
+            var line = lineCollection
                 .Where(p => p.Product.Id == product.Id)
                 .FirstOrDefault();
 
             if (line == null)
             {
-                lineCollection.Add(new CartLine { Product = product, Quantity = quantity });
+                lineCollection.Add(new CartLine { Product = product, Quantity = quantity, Price = product.Price, UserId = UserId });
             }
             else
             {
@@ -41,13 +45,11 @@ namespace Time_Zone.Domain.Entities.Product
             lineCollection.Clear();
         }
 
-        public IEnumerable<CartLine> Lines => lineCollection;
+        // Colectie virtuala pentru Entity Framework
+        public virtual ICollection<CartLine> Lines
+        {
+            get => lineCollection;
+            set => lineCollection = value?.ToList() ?? new List<CartLine>();
+        }
     }
-
-    public class CartLine
-    {
-        public Product Product { get; set; }
-        public int Quantity { get; set; }
-    }
-
 }

@@ -1,0 +1,12 @@
+﻿@model Time_Zone.Models.UserStatusViewModel
+
+@if (Model.IsAuthenticated)
+{
+    <p>Welcome, @Model.Username!</p>
+    <a href="@Url.Action("Logout", "Login")" class="btn btn-primary">Log Out</a>
+}
+else
+{
+    <p>You are not logged in.</p>
+    <a href="@Url.Action("Login", "Login")" class="btn btn-primary">Log In</a>
+}

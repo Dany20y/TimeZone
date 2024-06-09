@@ -2666,10 +2666,14 @@
     <Compile Include="Controllers\CartController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\LoginController.cs" />
+    <Compile Include="Controllers\ProductController.cs" />
     <Compile Include="Extension\HttpContextExtensions.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\CartService.cs" />
+    <Compile Include="Models\ProductViewModel.cs" />
+    <Compile Include="Models\UserStatusViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -2963,7 +2967,6 @@
     <Content Include="Views\Home\Blog.cshtml" />
     <Content Include="Views\Home\BlogDetails.cshtml" />
     <Content Include="Views\Login\Login.cshtml" />
-    <Content Include="Views\Home\Confirmation.cshtml" />
     <Content Include="Views\Home\Contact.cshtml" />
     <Content Include="Views\Shared\_Hero.cshtml" />
     <Content Include="Views\Shared\NoHero.cshtml" />
@@ -2980,6 +2983,7 @@
     <Content Include="Views\Cart\Cart.cshtml" />
     <Content Include="Views\Cart\Index.cshtml" />
     <Content Include="Views\Cart\ProductCheckout.cshtml" />
+    <Content Include="Views\Login\_UserStatus.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -2990,7 +2994,6 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Images\Products\" />
-    <Folder Include="Models\" />
     <Folder Include="Views\Product\" />
   </ItemGroup>
   <ItemGroup>

@@ -77,12 +77,6 @@
                         </div>
                         <div class="col-md-12 form-group">
                             <div class="creat_account">
-                                <input type="checkbox" id="f-option2" name="create_account" />
-                                <label for="f-option2">Create an account?</label>
-                            </div>
-                        </div>
-                        <div class="col-md-12 form-group">
-                            <div class="creat_account">
                                 <h3>Shipping Details</h3>
                                 <input type="checkbox" id="f-option3" name="ship_to_different" />
                                 <label for="f-option3">Ship to a different address?</label>
@@ -90,7 +84,7 @@
                             <textarea class="form-control" name="order_notes" id="message" rows="1" placeholder="Order Notes"></textarea>
                         </div>
                         <div class="col-md-12 form-group">
-                            <input type="hidden" name="subtotal" value="@subtotalValue.ToString("0.00")" />
+                            <input type="hidden" name="subtotal" value="$@ViewBag.Subtotal.ToString("0.00")" />
                             <button type="submit" class="btn_3">Place Order</button>
                         </div>
                     </form>
@@ -120,13 +114,13 @@
                         </ul>
                         <ul class="list list_2">
                             <li>
-                                <a href="#">Subtotal <span>$@subtotalValue.ToString("0.00")</span></a>
+                                <a href="#">Subtotal <span>$@ViewBag.Subtotal.ToString("0.00")</span></a>
                             </li>
                             <li>
                                 <a href="#">Shipping <span>Flat rate: $50.00</span></a>
                             </li>
                             <li>
-                                <a href="#">Total <span>$@totalValue.ToString("0.00")</span></a>
+                                <a href="#">Total <span>$@ViewBag.Subtotal.ToString("0.00")</span></a>
                             </li>
                         </ul>
                         <div class="payment_item">

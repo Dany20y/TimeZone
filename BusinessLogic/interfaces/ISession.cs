@@ -1,14 +1,9 @@
 ﻿using Time_Zone.Domain.Entities.User;
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Web;
+using System.Collections.Generic;
 using Time_Zone.Domain.Entities.Product;
 
-namespace Time_Zome.BussinesLogic
+namespace Time_Zone.BussinesLogic
 {
     public interface ISession
     {
