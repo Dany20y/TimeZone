@@ -2672,6 +2672,7 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\CartService.cs" />
+    <Compile Include="Models\PasswordChangeModel.cs" />
     <Compile Include="Models\ProductViewModel.cs" />
     <Compile Include="Models\UserStatusViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -2984,6 +2985,8 @@
     <Content Include="Views\Cart\Index.cshtml" />
     <Content Include="Views\Cart\ProductCheckout.cshtml" />
     <Content Include="Views\Login\_UserStatus.cshtml" />
+    <Content Include="Views\Shared\_ChangePasswordForm.cshtml" />
+    <Content Include="Views\Home\UProfile.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

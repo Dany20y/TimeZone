@@ -5,7 +5,46 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
+<!-- Stiluri CSS incluse direct -->
 <style>
+    /* Stiluri pentru butonul de adăugare în coș */
+    .img-cap button {
+        background-color: red;
+        color: white;
+        border: none;
+        padding: 10px;
+        border-radius: 0; /* Colțuri pătrate */
+        font-size: 14px;
+        cursor: pointer;
+        transition: background-color 0.3s;
+        width: 100%; /* Lățimea completă a butonului */
+        display: block; /* Asigură că butonul este un element de bloc */
+        box-sizing: border-box; /* Asigură că paddingul este inclus în lățime */
+    }
+
+        .img-cap button:hover {
+            background-color: darkred;
+        }
+
+    /* Stiluri pentru butonul de detalii */
+    .popular-caption .btn {
+        background-color: red;
+        color: white;
+        border: none;
+        padding: 10px;
+        border-radius: 0; /* Colțuri pătrate */
+        font-size: 14px;
+        cursor: pointer;
+        transition: background-color 0.3s;
+        display: inline-block;
+        margin-top: 10px; /* Spațiu între text și buton */
+    }
+
+        .popular-caption .btn:hover {
+            background-color: darkred;
+        }
+
+    /* Alte stiluri existente */
     .product-card {
         margin-bottom: 1.5rem;
         text-align: center;
@@ -33,13 +72,13 @@
 
     .img-cap {
         position: absolute;
-        bottom: 10px;
-        left: 50%;
-        transform: translateX(-50%);
-        background-color: red;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        background-color: rgba(0, 0, 0, 0.5);
         color: white;
-        padding: 10px 20px;
-        border-radius: 30px;
+        padding: 10px 0;
+        text-align: center;
         display: none;
     }
 
@@ -62,20 +101,19 @@
         margin-top: 20px;
     }
 
-        .popular-caption h3 a {
+        .popular-caption h2 {
+            font-size: 20px;
             color: #333;
             text-decoration: none;
         }
-
-            .popular-caption h3 a:hover {
-                color: red;
-            }
 
         .popular-caption span {
             display: block;
             font-size: 18px;
             color: #999;
+            margin-top: 5px;
         }
+
 </style>
 
 <!-- Latest Products Start -->
@@ -129,7 +167,7 @@
                                         <form action="@Url.Action("AddToCart", "Cart")" method="post">
                                             <input type="hidden" name="id" value="@product.Id" />
                                             <input type="hidden" name="quantity" value="1" />
-                                            <button type="submit" style="color: white; background: none; border: none;">Add to cart</button>
+                                            <button type="submit">Add to cart</button>
                                         </form>
                                     </div>
                                     <div class="favorit-items">
@@ -139,7 +177,7 @@
                                 <div class="popular-caption">
                                     <div class="product">
                                         <h2>@product.Name</h2>
-                                        <a href="@Url.Action("ProductDetails", "Home", new { productId = product.Id })" class="btn btn-primary">View Details</a>
+                                        <a href="@Url.Action("ProductDetails", "Home", new { productId = product.Id })" class="btn">View Details</a>
                                     </div>
                                     <span>$@product.Price.ToString("0.00")</span>
                                 </div>
@@ -153,6 +191,38 @@
     </div>
 </section>
 
+<!-- Shop Method Start -->
+<div class="shop-method-area">
+    <div class="container">
+        <div class="method-wrapper">
+            <div class="row d-flex justify-content-between">
+                <div class="col-xl-4 col-lg-4 col-md-6">
+                    <div class="single-method mb-40">
+                        <i class="ti-package"></i>
+                        <h6>Free Shipping Method</h6>
+                        <p>Secure shipping with tracking available.</p>
+                    </div>
+                </div>
+                <div class="col-xl-4 col-lg-4 col-md-6">
+                    <div class="single-method mb-40">
+                        <i class="ti-unlock"></i>
+                        <h6>Secure Payment System</h6>
+                        <p>All transactions are encrypted for your safety.</p>
+                    </div>
+                </div>
+                <div class="col-xl-4 col-lg-4 col-md-6">
+                    <div class="single-method mb-40">
+                        <i class="ti-reload"></i>
+                        <h6>Money Back Guarantee</h6>
+                        <p>Not satisfied? Get a full refund within 30 days.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Shop Method End-->
+<!-- JavaScript pentru sortare și filtrare -->
 <script>
     function filterByCategory() {
         var selectedCategory = document.getElementById("categoryFilter").value;
@@ -206,35 +276,3 @@
     // Initialize with default sorting and filtering
     filterByCategory();
 </script>
-
-<!-- Shop Method Start -->
-<div class="shop-method-area">
-    <div class="container">
-        <div class="method-wrapper">
-            <div class="row d-flex justify-content-between">
-                <div class="col-xl-4 col-lg-4 col-md-6">
-                    <div class="single-method mb-40">
-                        <i class="ti-package"></i>
-                        <h6>Free Shipping Method</h6>
-                        <p>Secure shipping with tracking available.</p>
-                    </div>
-                </div>
-                <div class="col-xl-4 col-lg-4 col-md-6">
-                    <div class="single-method mb-40">
-                        <i class="ti-unlock"></i>
-                        <h6>Secure Payment System</h6>
-                        <p>All transactions are encrypted for your safety.</p>
-                    </div>
-                </div>
-                <div class="col-xl-4 col-lg-4 col-md-6">
-                    <div class="single-method mb-40">
-                        <i class="ti-reload"></i>
-                        <h6>Money Back Guarantee</h6>
-                        <p>Not satisfied? Get a full refund within 30 days.</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-<!-- Shop Method End-->

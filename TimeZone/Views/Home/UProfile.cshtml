@@ -1,0 +1,45 @@
+﻿@model Time_Zone.Models.PasswordChangeModel
+
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.Title = "User Profile";
+}
+
+<div class="container mt-5">
+    <h2>User Profile</h2>
+    <hr />
+    @if (TempData["Error"] != null)
+    {
+        <div class="alert alert-danger">
+            @TempData["Error"]
+        </div>
+    }
+    <div class="row">
+        <div class="col-md-6">
+            <h4>Change Password</h4>
+            <hr />
+            @using (Html.BeginForm("ChangePassword", "Home", FormMethod.Post, new { @class = "form-horizontal" }))
+            {
+                @Html.AntiForgeryToken()
+                <div class="form-group">
+                    @Html.LabelFor(m => m.OldPassword, new { @class = "control-label" })
+                    @Html.PasswordFor(m => m.OldPassword, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(m => m.OldPassword, "", new { @class = "text-danger" })
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(m => m.NewPassword, new { @class = "control-label" })
+                    @Html.PasswordFor(m => m.NewPassword, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(m => m.NewPassword, "", new { @class = "text-danger" })
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(m => m.ConfirmPassword, new { @class = "control-label" })
+                    @Html.PasswordFor(m => m.ConfirmPassword, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(m => m.ConfirmPassword, "", new { @class = "text-danger" })
+                </div>
+                <div class="form-group">
+                    <button type="submit" class="btn btn-primary">Change Password</button>
+                </div>
+            }
+        </div>
+    </div>
+</div>

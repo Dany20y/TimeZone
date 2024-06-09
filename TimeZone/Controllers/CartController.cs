@@ -66,7 +66,7 @@ namespace Time_Zone.Controllers
             return View(cartViewModel);
         }
 
-        [HttpPost]
+        [HttpGet]
         public async Task<ActionResult> RemoveFromCart(int id)
         {
             if (Session["Username"] == null)

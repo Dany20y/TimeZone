@@ -76,7 +76,7 @@ namespace Time_Zone.Controllers
                 if (UserSession != null && UserSession.ExpireTime > DateTime.Now)
                 {
                     ViewBag.Username = session.Username;
-                    return View(new PasswordChangeModel());
+                    return View(new Time_Zone.Models.PasswordChangeModel());
                 }
                 else
                 {

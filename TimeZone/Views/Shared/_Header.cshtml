@@ -3,100 +3,20 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Time Zone</title>
-
-    <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <!-- Font Awesome Icons -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
-    <!-- Custom CSS -->
-    <style>
-        .header-area {
-            background-color: #fff;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            padding: 10px 0;
-        }
-
-        .main-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .logo img {
-            height: 40px;
-        }
-
-        .main-menu ul {
-            list-style: none;
-            padding: 0;
-            margin: 0;
-            display: flex;
-            gap: 20px;
-        }
-
-            .main-menu ul li {
-                position: relative;
-            }
-
-                .main-menu ul li a {
-                    text-decoration: none;
-                    color: #333;
-                    padding: 10px 15px;
-                    display: block;
-                }
-
-                    .main-menu ul li a:hover,
-                    .main-menu ul li a.active {
-                        color: #e53e3e;
-                    }
-
-        .submenu {
-            display: none;
-            position: absolute;
-            background-color: #fff;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            z-index: 10;
-            top: 100%;
-            left: 0;
-            white-space: nowrap;
-        }
-
-            .submenu li a {
-                padding: 10px 20px;
-            }
-
-        .main-menu ul li:hover .submenu {
-            display: block;
-        }
-
-        .header-right ul {
-            list-style: none;
-            display: flex;
-            gap: 15px;
-            margin: 0;
-            padding: 0;
-        }
-
-            .header-right ul li a {
-                color: #333;
-                font-size: 20px;
-            }
-
-                .header-right ul li a:hover {
-                    color: #e53e3e;
-                }
-    </style>
+    <title>Header with Admin Access</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
+    <link rel="stylesheet" href="~/Content/plugins/fontawesome-free/css/all.min.css">
+    <link rel="stylesheet" href="~/Content/plugins/overlayScrollbars/css/OverlayScrollbars.min.css">
+    <link rel="stylesheet" href="~/Content/dist/css/adminlte.min.css">
 </head>
 <body>
-    <!-- Header Start -->
-    <div class="header-area">
-        <div class="main-header">
+    <header class="header-area">
+        <div class="main-header header-sticky">
             <div class="container-fluid">
-                <div class="menu-wrapper d-flex align-items-center justify-content-between">
+                <div class="menu-wrapper">
                     <!-- Logo -->
                     <div class="logo">
-                        <a href="/Home"><img src="/Vendor/assets/img/logo/logo.png" alt="Time Zone Logo"></a>
+                        <a href="/Home"><img src="/Vendor/assets/img/logo/logo.png" alt=""></a>
                     </div>
                     <!-- Main-menu -->
                     <div class="main-menu d-none d-lg-block">
@@ -124,7 +44,6 @@
                                     <ul class="submenu">
                                         <li><a href="/Login/Login">Login</a></li>
                                         <li><a href="/Login/Register">Register</a></li>
-                                        <li><a href="/Admin/Admin">Admin</a></li>
                                         <li><a href="/Cart/Index">Cart</a></li>
                                         <li><a href="/Cart/ProductCheckout">Product Checkout</a></li>
                                     </ul>
@@ -141,65 +60,71 @@
                                     <span class="flaticon-search"></span>
                                 </div>
                             </li>
-                            <li>
-                                <!-- Icona utilizatorului cu modalul de logare/deconectare -->
-                                <a href="#" id="userIcon"><span class="flaticon-user"></span></a>
-                            </li>
-                            <li><a href="/Cart/Index"><span class="flaticon-shopping-cart"></span></a> </li>
+                            <li><a href="#" class="flaticon-user"></span></a></li>
+                            <li><a href="/Cart/Index"><span class="flaticon-shopping-cart"></span></a></li>
                         </ul>
                     </div>
                 </div>
+                <!-- Mobile Menu -->
+                <div class="col-12">
+                    <div class="mobile_menu d-block d-lg-none"></div>
+                </div>
             </div>
         </div>
-    </div>
-    <!-- Header End -->
-    <!-- Modal HTML pentru autentificare/deconectare -->
-    <div class="modal fade" id="loginModal" tabindex="-1" role="dialog" aria-labelledby="loginModalLabel" aria-hidden="true">
+    </header>
+
+    <!-- Modal pentru detalii despre utilizator -->
+    <div id="userModal" class="modal fade" tabindex="-1" role="dialog">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="loginModalLabel">User Account</h5>
+                    <h5 class="modal-title">User Details</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
                 <div class="modal-body">
-                    <!-- Aici va fi conținutul dinamic -->
-                    <div id="userStatus">
-                        <!-- Aici se vor încărca informațiile despre starea utilizatorului -->
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    @{
+                        var user = HttpContext.Current.Session["__SessionObject"] as Time_Zone.Domain.Entities.User.UserMinimal;
+                        if (user != null)
+                        {
+                            <p>Logged in as: <strong>@user.Username</strong></p>
+                            <p>Role: <strong>@user.Level</strong></p>
+                            if (user.Level == Time_Zone.Domain.Enums.LevelAcces.Admin)
+                            {
+                                <p>Welcome, Admin!</p>
+                                <a href="/Admin/Admin" class="btn btn-primary">Go to Admin Page</a>
+                            }
+                            <a href="/Home/UProfile" class="btn btn-secondary">Change Password</a>
+                            <a href="/Login/Logout" class="btn btn-danger">Logout</a>
+                        }
+                        else
+                        {
+                            <p>You are not logged in.</p>
+                            <a href="/Login/Login" class="btn btn-primary">Login</a>
+                        }
+                    }
                 </div>
             </div>
         </div>
     </div>
 
     <!-- jQuery -->
-    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
-    <!-- Bootstrap JS -->
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
+    <script src="~/Content/plugins/jquery/jquery.min.js"></script>
+    <!-- Bootstrap -->
+    <script src="~/Content/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <!-- overlayScrollbars -->
+    <script src="~/Content/plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>
+    <!-- AdminLTE App -->
+    <script src="~/Content/dist/js/adminlte.js"></script>
 
+    <!-- Custom Script -->
     <script>
+        // Script pentru a afișa modalul la clic pe icon-ul utilizator
         $(document).ready(function () {
-            // Când se face clic pe pictograma de utilizator
-            $('#userIcon').on('click', function () {
-                // Apelează metoda de verificare a stării autentificării
-                $.ajax({
-                    url: '@Url.Action("GetUserStatus", "Login")',
-                    method: 'GET',
-                    success: function (data) {
-                        // Încarcă conținutul primit în modală
-                        $('#userStatus').html(data);
-                        // Afișează fereastra modală
-                        $('#loginModal').modal('show');
-                    },
-                    error: function () {
-                        // Afișează un mesaj de eroare în caz de eșec
-                        $('#userStatus').html('<p class="text-danger">Error loading user status. Please try again.</p>');
-                    }
-                });
+            $(".flaticon-user").on("click", function (e) {
+                e.preventDefault();
+                $("#userModal").modal("show");
             });
         });
     </script>
