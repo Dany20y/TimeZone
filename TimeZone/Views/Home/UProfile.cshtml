@@ -1,45 +1,35 @@
 ﻿@model Time_Zone.Models.PasswordChangeModel
 
 @{
-    Layout = "~/Views/Shared/_Layout.cshtml";
     ViewBag.Title = "User Profile";
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 <div class="container mt-5">
     <h2>User Profile</h2>
-    <hr />
-    @if (TempData["Error"] != null)
+    <h3>Change Password</h3>
+    @if (TempData["Message"] != null)
     {
-        <div class="alert alert-danger">
-            @TempData["Error"]
-        </div>
+        <div class="alert alert-info mt-3">@TempData["Message"]</div>
     }
-    <div class="row">
-        <div class="col-md-6">
-            <h4>Change Password</h4>
-            <hr />
-            @using (Html.BeginForm("ChangePassword", "Home", FormMethod.Post, new { @class = "form-horizontal" }))
-            {
-                @Html.AntiForgeryToken()
-                <div class="form-group">
-                    @Html.LabelFor(m => m.OldPassword, new { @class = "control-label" })
-                    @Html.PasswordFor(m => m.OldPassword, new { @class = "form-control" })
-                    @Html.ValidationMessageFor(m => m.OldPassword, "", new { @class = "text-danger" })
-                </div>
-                <div class="form-group">
-                    @Html.LabelFor(m => m.NewPassword, new { @class = "control-label" })
-                    @Html.PasswordFor(m => m.NewPassword, new { @class = "form-control" })
-                    @Html.ValidationMessageFor(m => m.NewPassword, "", new { @class = "text-danger" })
-                </div>
-                <div class="form-group">
-                    @Html.LabelFor(m => m.ConfirmPassword, new { @class = "control-label" })
-                    @Html.PasswordFor(m => m.ConfirmPassword, new { @class = "form-control" })
-                    @Html.ValidationMessageFor(m => m.ConfirmPassword, "", new { @class = "text-danger" })
-                </div>
-                <div class="form-group">
-                    <button type="submit" class="btn btn-primary">Change Password</button>
-                </div>
-            }
+    @using (Html.BeginForm("ChangePassword", "Home", FormMethod.Post))
+    {
+        @Html.AntiForgeryToken()
+        <div class="form-group">
+            @Html.LabelFor(m => m.OldPassword)
+            @Html.PasswordFor(m => m.OldPassword, new { @class = "form-control" })
+            @Html.ValidationMessageFor(m => m.OldPassword)
         </div>
-    </div>
+        <div class="form-group">
+            @Html.LabelFor(m => m.NewPassword)
+            @Html.PasswordFor(m => m.NewPassword, new { @class = "form-control" })
+            @Html.ValidationMessageFor(m => m.NewPassword)
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(m => m.ConfirmPassword)
+            @Html.PasswordFor(m => m.ConfirmPassword, new { @class = "form-control" })
+            @Html.ValidationMessageFor(m => m.ConfirmPassword)
+        </div>
+        <button type="submit" class="btn btn-primary">Change Password</button>
+    }
 </div>

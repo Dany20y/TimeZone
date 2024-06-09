@@ -1,11 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 using System.Web.Mvc;
 using Time_Zone.BussinesLogic;
 using Time_Zone.BussinessLogic;
 using Time_Zone.Domain.Entities.Product;
+using Time_Zone.Models;  // Asigură-te că importi spațiul de nume corect pentru model
 
 namespace Time_Zone.Controllers
 {
@@ -34,10 +32,12 @@ namespace Time_Zone.Controllers
         {
             return View();
         }
+
         public ActionResult Cart()
         {
             return View();
         }
+
         public ActionResult Index()
         {
             return View();
@@ -47,18 +47,22 @@ namespace Time_Zone.Controllers
         {
             return View();
         }
+
         public ActionResult Shop()
         {
             return RedirectToAction("Shop", "Products");
         }
+
         public ActionResult Blog()
         {
             return View();
         }
+
         public ActionResult BlogDetails()
         {
             return View();
         }
+
         public ActionResult Confirmation()
         {
             return View();
@@ -95,7 +99,7 @@ namespace Time_Zone.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult ChangePassword(PasswordChangeModel model)
+        public ActionResult ChangePassword(Time_Zone.Models.PasswordChangeModel model) // Specifică explicit spațiul de nume
         {
             if (!ModelState.IsValid)
             {
